@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ColorPicker</title>
+    <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/monolith.min.css" />
+    <style>
+        body {
+            background-color: #1e1e1e;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #color-picker-container {
+            margin-bottom: 20px;
+            width: 500px;
+            height: 300px;
+        }
+
+        .pcr-app {
+            transform: scale(1.75);
+            transform-origin: top left;
+        }
+
+        #colorValue {
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+<div id="color-picker-container"></div>
+<p>Color: <span id="colorValue">#000000</span></p>
+
+<script>
+    const pickr = Pickr.create({
+        el: '#color-picker-container',
+        theme: 'monolith',
+        default: '#000000',
+        components: {
+            preview: true,
+            opacity: true,
+            hue: true,
+
+            interaction: {
+                hex: true,
+                rgba: true,
+                input: true,
+                clear: true,
+                save: true // Мы заменим эту кнопку
+            }
+        }
+    });
+
+    const valueDisplay = document.getElementById('colorValue');
+
+    pickr.on('change', (color) => {
+        const hexColor = color.toHEXA().toString();
+        valueDisplay.textContent = hexColor;
+    });
+
+    pickr.on('save', (color, instance) => {
+        const hexColor = color.toHEXA().toString();
+        navigator.clipboard.writeText(hexColor)
+            .then(() => {
+                const saveButton = instance._root.interaction.save;
+                const originalText = saveButton.textContent;
+                saveButton.textContent = '✅';
+                setTimeout(() => {
+                    saveButton.textContent = originalText;
+                }, 1200);
+            })
+            .catch(err => console.error('Ошибка копирования:', err));
+    });
+</script>
+</body>
+</html>
