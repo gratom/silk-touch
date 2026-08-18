@@ -1,11 +1,13 @@
-﻿using System.Collections;
+﻿#if UNITASK
+
+using System.Collections;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Tools
 {
-    public class SelfDestroyer : MonoBehaviour
+    public class AsyncSelfDestroyer : MonoBehaviour
     {
         [SerializeField] private float timeToDestroy = 1;
 
@@ -20,3 +22,5 @@ namespace Tools
         }
     }
 }
+
+#endif

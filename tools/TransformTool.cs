@@ -331,35 +331,37 @@ namespace Tools
         }
 
         #region geometric center
+
         public static Vector3 TopExtent(this Transform transform)
         {
             return GetExtent(transform, Vector3.up);
         }
-        
+
         public static Vector3 BottomExtent(this Transform transform)
         {
             return GetExtent(transform, Vector3.down);
         }
-        
+
         public static Vector3 LeftExtent(this Transform transform)
         {
             return GetExtent(transform, Vector3.left);
         }
-        
+
         public static Vector3 RightExtent(this Transform transform)
         {
             return GetExtent(transform, Vector3.right);
         }
-        
+
         public static Vector3 FrontExtent(this Transform transform)
         {
             return GetExtent(transform, Vector3.forward);
         }
-        
+
         public static Vector3 BackExtent(this Transform transform)
         {
             return GetExtent(transform, Vector3.back);
         }
+
         #endregion
 
         #region pivot
@@ -369,31 +371,31 @@ namespace Tools
             Vector3 v = GetExtent(transform, Vector3.up);
             return transform.position.WithY(v.y);
         }
-        
+
         public static Vector3 BottomExtentPivot(this Transform transform)
         {
             Vector3 v = GetExtent(transform, Vector3.down);
             return transform.position.WithY(v.y);
         }
-        
+
         public static Vector3 LeftExtentPivot(this Transform transform)
         {
             Vector3 v = GetExtent(transform, Vector3.left);
             return transform.position.WithX(v.x);
         }
-        
+
         public static Vector3 RightExtentPivot(this Transform transform)
         {
             Vector3 v = GetExtent(transform, Vector3.right);
             return transform.position.WithX(v.x);
         }
-        
+
         public static Vector3 FrontExtentPivot(this Transform transform)
         {
             Vector3 v = GetExtent(transform, Vector3.forward);
             return transform.position.WithZ(v.z);
         }
-        
+
         public static Vector3 BackExtentPivot(this Transform transform)
         {
             Vector3 v = GetExtent(transform, Vector3.back);
@@ -401,7 +403,7 @@ namespace Tools
         }
 
         #endregion
-        
+
         public static Vector3 GetExtent(this Transform transform, Vector3 localDir)
         {
             Renderer renderer = transform.GetComponent<Renderer>();
@@ -412,26 +414,26 @@ namespace Tools
         {
             return bounds.center + Vector3.Scale(worldDir, bounds.extents);
         }
-        
+
         public static Vector3 PivotToBoundsCenter(this Transform transform)
         {
             Renderer renderer = transform.GetComponent<Renderer>();
             return renderer == null ? Vector3.zero : renderer.bounds.center - transform.position;
         }
-        
+
         public static Quaternion ToQuaternionR(this Plane plane, float radianAngle)
         {
             Vector3 axis = plane.normal.normalized;
             float degrees = radianAngle * Mathf.Rad2Deg;
             return Quaternion.AngleAxis(degrees, axis);
         }
-        
+
         public static Quaternion ToQuaternion(this Plane plane, float angle)
         {
             Vector3 axis = plane.normal.normalized;
             return Quaternion.AngleAxis(angle, axis);
         }
-        
+
         public static Plane ToPlane(this Quaternion q, out float angle)
         {
             if (q == Quaternion.identity)
@@ -459,7 +461,7 @@ namespace Tools
             angle = angleDeg;
             return new Plane(axis, 0f);
         }
-        
+
         public static Plane ToPlaneR(this Quaternion q, out float radianAngle)
         {
             if (q == Quaternion.identity)
@@ -487,6 +489,6 @@ namespace Tools
             radianAngle = angleDeg * Mathf.Deg2Rad;
             return new Plane(axis, 0f);
         }
-        
+
     }
 }

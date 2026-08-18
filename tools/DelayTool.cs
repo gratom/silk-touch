@@ -1,4 +1,4 @@
-﻿//developer -> gratomov@gmail.com
+﻿#if UNITASK
 
 using System;
 using System.Collections;
@@ -40,3 +40,5 @@ namespace Tools
     }
 
 }
+
+#endif

@@ -57,7 +57,7 @@ namespace Tools
         {
             return Mathf.CeilToInt(value);
         }
-        
+
         public static int[] SplitToDigits(this int value)
         {
             if (value == 0)

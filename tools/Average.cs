@@ -60,7 +60,7 @@ namespace Tools
             List<T> row = new List<T>(All.Length);
             for (int i = 0; i < All.Length; i++)
             {
-                int index = (i + counter - 1 + All.Length) % (All.Length);
+                int index = (i + counter - 1 + All.Length) % All.Length;
                 row.Add(All[index]);
             }
 

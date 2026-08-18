@@ -3,7 +3,7 @@ using Random = UnityEngine.Random;
 
 namespace Tools
 {
-    
+
     using UnityEngine;
 
     public static class UnityVectorsTools
@@ -18,12 +18,12 @@ namespace Tools
         {
             return new Vector3(vector.x + newX, vector.y, vector.z);
         }
-        
+
         public static Vector3 WithY(this Vector3 vector, float newY)
         {
             return new Vector3(vector.x, newY, vector.z);
         }
-        
+
         public static Vector3 AddY(this Vector3 vector, float newY)
         {
             return new Vector3(vector.x, vector.y + newY, vector.z);
@@ -38,7 +38,7 @@ namespace Tools
         {
             return new Vector3(vector.x, vector.y, vector.z + newZ);
         }
-        
+
         public static Vector2 RadianToVector2(float radian)
         {
             return new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));
@@ -71,7 +71,7 @@ namespace Tools
         {
             return new Vector3(Random.Range(point1.x, point2.x), Random.Range(point1.y, point2.y), Random.Range(point1.z, point2.z));
         }
-        
+
         public static float ReverseLerp(Vector3 start, Vector3 end, Vector3 pos)
         {
             Vector3 direction = end - start;
@@ -79,7 +79,7 @@ namespace Tools
             return projection;
         }
 
-         public static Vector2 ScreenToLocalByRect(this Vector2 origin, RectComponent rect)
+        public static Vector2 ScreenToLocalByRect(this Vector2 origin, RectComponent rect)
         {
             return rect.World2Local(origin);
         }
@@ -93,7 +93,7 @@ namespace Tools
         {
             return new Vector3Int(Mathf.RoundToInt(origin.x), Mathf.RoundToInt(origin.y), Mathf.RoundToInt(origin.z));
         }
-        
+
         public static Vector2 WithX(this Vector2 vector, float newX)
         {
             return new Vector2(newX, vector.y);
@@ -103,7 +103,7 @@ namespace Tools
         {
             return new Vector2(vector.x, newY);
         }
-        
+
         public static Vector3 ToX0Y(this Vector2 v)
         {
             return new Vector3(v.x, 0, v.y);
@@ -143,7 +143,7 @@ namespace Tools
         {
             return new Vector2(v.x, v.y);
         }
-        
+
         public static Vector2 YZ(this Vector3 v)
         {
             return new Vector2(v.y, v.z);
@@ -153,12 +153,12 @@ namespace Tools
         {
             return origin + (target - origin) * 0.5f;
         }
-        
+
         public static Quaternion ToQuaternion(this Vector3 v)
         {
             return Quaternion.Euler(v);
         }
-        
+
     }
 
 }

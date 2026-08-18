@@ -28,6 +28,7 @@ namespace Tools
             UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(index).completed += (x) => { afterLoadingCallback?.Invoke(); };
         }
 
+#if UNITASK
         /// <summary>
         /// Waits for the specified number of seconds and then asynchronously loads the scene at the assembly index
         /// </summary>
@@ -54,5 +55,6 @@ namespace Tools
                 UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(index).completed += (x) => { afterLoadingCallback?.Invoke(); };
             });
         }
+#endif
     }
 }

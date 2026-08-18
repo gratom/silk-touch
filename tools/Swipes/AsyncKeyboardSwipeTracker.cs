@@ -1,12 +1,14 @@
-﻿using System;
+﻿#if UNITASK
+
+using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Tools.Swipes
 {
-    public static class KeyboardSwipeTracker
+    public static class AsyncKeyboardSwipeTracker
     {
-        public static event Action<SwipeTracker.Swipe> OnSwipe
+        public static event Action<AsyncSwipeTracker.Swipe> OnSwipe
         {
             add
             {
@@ -16,7 +18,7 @@ namespace Tools.Swipes
             remove => onSwipe -= value;
         }
 
-        private static Action<SwipeTracker.Swipe> onSwipe;
+        private static Action<AsyncSwipeTracker.Swipe> onSwipe;
         private static bool trackingActive;
 
         private static async void EnsureTracking()
@@ -45,7 +47,7 @@ namespace Tools.Swipes
         {
             if (Input.GetKeyDown(key))
             {
-                SwipeTracker.Swipe fakeSwipe = new SwipeTracker.Swipe
+                AsyncSwipeTracker.Swipe fakeSwipe = new AsyncSwipeTracker.Swipe
                 {
                     IsOverUI = false,
                     Start = Vector2.zero,
@@ -58,3 +60,5 @@ namespace Tools.Swipes
         }
     }
 }
+
+#endif

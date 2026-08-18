@@ -46,7 +46,7 @@ namespace Tools.ScrollComponent
             averageImpulse.Clear();
 #if UNITY_EDITOR
             if (OnBeginDragEvent == null)
-            {   
+            {
                 //Debug.Log($"OnBeginDrag [x:{startPoint.x}, y:{startPoint.y}]");
             }
             else

@@ -66,13 +66,22 @@ namespace Tools
         // --- Hotkey access to first 3 scenes ---
 
         [MenuItem("Scenes/Quick Load/Scene 1 &1")]
-        private static void LoadScene1() => LoadSceneAtIndex(0);
+        private static void LoadScene1()
+        {
+            LoadSceneAtIndex(0);
+        }
 
         [MenuItem("Scenes/Quick Load/Scene 2 &2")]
-        private static void LoadScene2() => LoadSceneAtIndex(1);
+        private static void LoadScene2()
+        {
+            LoadSceneAtIndex(1);
+        }
 
         [MenuItem("Scenes/Quick Load/Scene 3 &3")]
-        private static void LoadScene3() => LoadSceneAtIndex(2);
+        private static void LoadScene3()
+        {
+            LoadSceneAtIndex(2);
+        }
 
         private static void LoadSceneAtIndex(int index)
         {

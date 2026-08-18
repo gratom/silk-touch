@@ -9,14 +9,15 @@ public static class FolderTracker
 {
     public static string CurrentEditorFolder => currentFolder;
     private static string currentFolder;
-    
+
     static FolderTracker()
     {
         EditorApplication.update += GetProjectViewFolder;
+
         //debug
         //SceneView.duringSceneGui += OnSceneGUI;
     }
-    
+
     private static void OnSceneGUI(SceneView sceneView)
     {
         Handles.BeginGUI();
@@ -25,7 +26,7 @@ public static class FolderTracker
         GUILayout.EndArea();
         Handles.EndGUI();
     }
-    
+
     private static void GetProjectViewFolder()
     {
         Type projectBrowserType = typeof(Editor).Assembly.GetType("UnityEditor.ProjectBrowser");

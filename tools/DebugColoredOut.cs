@@ -52,7 +52,7 @@ namespace Tools
         {
             return $"<color={EDITOR_COLOR}>[EDITOR] {str}</color>";
         }
-        
+
         public static void Debug(this float f, string name = "float value")
         {
             UnityEngine.Debug.Log($"{name}:{f:0.000}".AsGameDebug());
@@ -72,7 +72,7 @@ namespace Tools
         {
             UnityEngine.Debug.Log($"{name}:{l}".AsGameDebug());
         }
-        
+
         public static void Debug(this Vector2 v, string name = "vector2 value")
         {
             UnityEngine.Debug.Log($"{name}:[x={v.x:0.00}; y={v.y:0.00}]".AsGameDebug());
@@ -82,12 +82,12 @@ namespace Tools
         {
             UnityEngine.Debug.Log($"{name}:[x={v.x:0.00}; y={v.y:0.00}; z={v.z:0.00}]".AsGameDebug());
         }
-        
+
         public static string WithColor(this string str, string color)
         {
             return $"<color={color}>{str}</color>";
         }
-        
+
         public static string WithColor(this string str, Color color)
         {
             return $"<color={color.ToHtmlStringRGBA()}>{str}</color>";

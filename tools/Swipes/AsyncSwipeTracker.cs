@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿#if UNITASK
+
+using UnityEngine;
 using System;
 using Cysharp.Threading.Tasks;
 
 namespace Tools.Swipes
 {
-    public static class SwipeTracker
+    public static class AsyncSwipeTracker
     {
         public enum SwipeDirection
         {
@@ -172,3 +174,5 @@ namespace Tools.Swipes
         }
     }
 }
+
+#endif

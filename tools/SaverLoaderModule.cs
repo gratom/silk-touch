@@ -124,7 +124,7 @@ namespace Tools
         public static string OverGeneratePath(string fileName)
         {
             List<string> finalListOfPathParts = NormalizePath(fileName);
-            
+
             string returnedPath = "";
             for (int i = 0; i < finalListOfPathParts.Count - 1; i++)
             {
@@ -145,7 +145,7 @@ namespace Tools
             returnedPath += finalListOfPathParts[finalListOfPathParts.Count - 1];
             return returnedPath;
         }
-        
+
         private static List<string> NormalizePath(string fileName)
         {
             string[] tempArray = fileName.Split('/');

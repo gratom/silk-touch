@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if UNITASK
+using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -83,3 +84,4 @@ namespace Tools
         }
     }
 }
+#endif

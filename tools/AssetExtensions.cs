@@ -1,5 +1,4 @@
-﻿#if UNITY_EDITOR
-
+﻿#if UNITY_EDITOR && UNITASK
 using System;
 using System.IO;
 using System.Reflection;
