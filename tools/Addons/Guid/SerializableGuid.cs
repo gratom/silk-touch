@@ -86,22 +86,27 @@ namespace Tools
         {
             return a.Guid == b.Guid;
         }
+        
         public static bool operator !=(SerializableGuid a, SerializableGuid b)
         {
             return a.Guid != b.Guid;
         }
+        
         public static explicit operator SerializableGuid(Guid guid)
         {
             return new SerializableGuid(guid);
         }
+        
         public static implicit operator Guid(SerializableGuid sGuid)
         {
             return sGuid.Guid;
         }
+        
         public static implicit operator SerializableGuid(string str)
         {
             return Guid.TryParse(str, out Guid guid) ? new SerializableGuid(guid) : new SerializableGuid();
         }
+        
         public static implicit operator string(SerializableGuid sGuid)
         {
             return sGuid.ToString();

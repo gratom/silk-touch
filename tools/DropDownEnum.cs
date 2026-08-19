@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 namespace Tools
 {
-    [Assert]
     [RequireComponent(typeof(Dropdown))]
     public class DropDownEnum : MonoBehaviour
     {

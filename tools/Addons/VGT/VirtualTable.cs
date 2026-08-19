@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
+using System;
+using System.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Tools
 {
-    using System;
-    using System.IO;
-    using System.Threading.Tasks;
-    using UnityEngine;
-    using UnityEngine.Networking;
 
     public class VirtualTable
     {
@@ -91,20 +90,19 @@ namespace Tools
                 {
                     if (c == '"')
                     {
-                        // Проверка на экранированную кавычку (две кавычки подряд "" означают одну кавычку внутри текста)
                         if (i + 1 < csvContent.Length && csvContent[i + 1] == '"')
                         {
                             currentField.Append('"');
-                            i++; // Пропускаем следующую кавычку
+                            i++;
                         }
                         else
                         {
-                            inQuotes = false; // Вышли из режима кавычек
+                            inQuotes = false;
                         }
                     }
                     else
                     {
-                        currentField.Append(c); // Внутри кавычек пишем всё подряд, включая переносы строк
+                        currentField.Append(c);
                     }
                 }
                 else
@@ -120,7 +118,6 @@ namespace Tools
                     }
                     else if (c == '\n' || c == '\r')
                     {
-                        // Добавляем поле и строку, если это реальный конец строки CSV
                         currentLine.Add(currentField.ToString());
                         currentField.Clear();
 
@@ -129,8 +126,6 @@ namespace Tools
                             lines.Add(currentLine.ToArray());
                             currentLine.Clear();
                         }
-
-                        // Пропускаем парный символ перевода строки (\r\n)
                         if (c == '\r' && i + 1 < csvContent.Length && csvContent[i + 1] == '\n')
                         {
                             i++;
@@ -142,8 +137,6 @@ namespace Tools
                     }
                 }
             }
-
-            // Обработка последнего поля, если текст не заканчивался переносом строки
             if (currentField.Length > 0 || currentLine.Count > 0)
             {
                 currentLine.Add(currentField.ToString());
@@ -151,11 +144,6 @@ namespace Tools
             }
 
             grid = lines.ToArray();
-        }
-
-        private string[] ParseCsvLine(string line)
-        {
-            return line.Split(',');
         }
     }
 }
