@@ -16,7 +16,6 @@ namespace Tools
         public AnimationCurve matchCurve = AnimationCurve.Linear(0.5f, 0, 2.5f, 1);
         private CanvasScaler _scaler;
 
-        // Кэшируем компоненты
         public CanvasScaler Scaler
         {
             get
@@ -66,7 +65,6 @@ namespace Tools
     [CustomEditor(typeof(DynamicCanvasScaler))]
     public class DynamicCanvasScalerEditor : Editor
     {
-        // Это заставляет инспектор перерисовываться каждый кадр
         public override bool RequiresConstantRepaint()
         {
             return true;
@@ -76,7 +74,6 @@ namespace Tools
         {
             DynamicCanvasScaler script = (DynamicCanvasScaler)target;
 
-            // Рисуем стандартную кривую
             EditorGUI.BeginChangeCheck();
             DrawDefaultInspector();
             if (EditorGUI.EndChangeCheck())

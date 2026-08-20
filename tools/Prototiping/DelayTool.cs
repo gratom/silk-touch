@@ -1,9 +1,10 @@
-﻿#if UNITASK
-
-using System;
+﻿using System;
 using System.Collections;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
+
+#if UNITASK
+using Cysharp.Threading.Tasks;
+#endif
 
 namespace Tools
 {
@@ -32,13 +33,12 @@ namespace Tools
             Destroy(gameObject);
         }
         
+#if UNITASK
         public static async UniTask DelayAsync(float time, Action action)
         {
             await UniTask.Delay(TimeSpan.FromSeconds(time), DelayType.Realtime);
             action?.Invoke();
         }
-    }
-
-}
-
 #endif
+    }
+}

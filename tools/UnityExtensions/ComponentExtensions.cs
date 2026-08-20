@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 namespace Tools
@@ -106,8 +105,7 @@ namespace Tools
             return false;
         }
 
-        public static T GetOrAddComponent<T>(this GameObject gameObject)
-            where T : Component
+        public static T GetOrAddComponent<T>(this GameObject gameObject) where T : Component
         {
 #if UNITY_2019_2_OR_NEWER
             if (!gameObject.TryGetComponent<T>(out T component))

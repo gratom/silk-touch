@@ -7,6 +7,12 @@ namespace Tools
 
     public static class MathExtensions
     {
+        public static bool HasFraction(this double number)
+        {
+            const double tolerance = 0.00001d;
+            return Math.Abs(number - Math.Truncate(number)) > tolerance;
+        }
+        
         public static float Sign(this float f)
         {
             return Mathf.Sign(f);

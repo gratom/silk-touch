@@ -37,5 +37,4 @@ namespace Tools
 
         protected abstract void OnClickFunction();
     }
-
 }

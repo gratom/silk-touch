@@ -1,6 +1,5 @@
 ﻿#if UNITASK
 
-using System.Collections;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;

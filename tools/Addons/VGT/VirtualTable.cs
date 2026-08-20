@@ -47,6 +47,27 @@ namespace Tools
             }
         }
 
+        public void Refresh(Action<bool> onComplete)
+        {
+            string url = string.Format(URL_TEMPLATE, spreadsheetId, sheetId);
+
+            UnityWebRequest request = UnityWebRequest.Get(url);
+            request.SendWebRequest().completed += operation =>
+            {
+                if (request.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.LogError($"Failed to refresh spreadsheet: {request.error}");
+                    request.Dispose();
+                    onComplete?.Invoke(false);
+                    return;
+                }
+
+                ParseCsv(request.downloadHandler.text);
+                request.Dispose();
+                onComplete?.Invoke(true);
+            };
+        }
+        
         public string GetCell(int rowIndex, int columnIndex)
         {
             if (grid == null)
