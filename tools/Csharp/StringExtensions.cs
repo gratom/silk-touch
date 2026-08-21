@@ -10,8 +10,8 @@ namespace Tools
 {
     public static class StringExtensions
     {
-        public const string LettersAndNumbers = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        public const string SpecialCharacters = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/";
+        public const string LETTERS_AND_NUMBERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        public const string SPECIAL_CHARACTERS = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/";
 
         public static void OpenLink(this string link)
         {
@@ -67,7 +67,7 @@ namespace Tools
                 throw new ArgumentException("Length must be greater than zero.", nameof(length));
             }
 
-            string characterSet = includeSpecialCharacters ? LettersAndNumbers + SpecialCharacters : LettersAndNumbers;
+            string characterSet = includeSpecialCharacters ? LETTERS_AND_NUMBERS + SPECIAL_CHARACTERS : LETTERS_AND_NUMBERS;
             StringBuilder randomString = new StringBuilder(length);
             byte[] randomBytes = new byte[length];
 
@@ -187,36 +187,39 @@ namespace Tools
             int n = source.Length;
             int m = target.Length;
 
-            int[,] d = new int[n + 1, m + 1];
+            int stride = m + 1;
+            int[] d = new int[(n + 1) * stride];
 
             for (int i = 0; i <= n; i++)
             {
-                d[i, 0] = i;
+                d[i * stride] = i;
             }
 
             for (int j = 0; j <= m; j++)
             {
-                d[0, j] = j;
+                d[j] = j;
             }
 
             for (int i = 1; i <= n; i++)
             {
+                int rowIdx = i * stride;
+                int prevRowIdx = (i - 1) * stride;
+
                 for (int j = 1; j <= m; j++)
                 {
                     int cost = source[i - 1] == target[j - 1] ? 0 : 1;
 
-                    d[i, j] = Math.Min(
+                    d[rowIdx + j] = Math.Min(
                         Math.Min(
-                            d[i - 1, j] + 1, // удаление
-                            d[i, j - 1] + 1 // вставка
+                            d[prevRowIdx + j] + 1,     // удаление
+                            d[rowIdx + j - 1] + 1      // вставка
                         ),
-                        d[i - 1, j - 1] + cost // замена
+                        d[prevRowIdx + j - 1] + cost   // замена
                     );
                 }
             }
 
-            return d[n, m];
+            return d[n * stride + m];
         }
-
     }
 }

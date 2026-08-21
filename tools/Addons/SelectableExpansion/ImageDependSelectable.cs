@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 namespace Tools
 {
-
     [RequireComponent(typeof(Image))]
     public class ImageDependSelectable : MonoBehaviour
     {

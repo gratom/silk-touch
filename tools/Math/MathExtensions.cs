@@ -7,6 +7,11 @@ namespace Tools
 
     public static class MathExtensions
     {
+        public static bool IsInRange(this int number, int minValue, int maxValue)
+        {
+            return number >= minValue && number <= maxValue;
+        }
+        
         public static bool HasFraction(this double number)
         {
             const double tolerance = 0.00001d;
