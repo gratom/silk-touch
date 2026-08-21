@@ -78,12 +78,12 @@ namespace Tools
             float projection = Vector3.Dot(pos - start, direction) / direction.sqrMagnitude;
             return projection;
         }
-
+#if UI_TMP
         public static Vector2 ScreenToLocalByRect(this Vector2 origin, RectComponent rect)
         {
             return rect.World2Local(origin);
         }
-
+#endif
         public static Vector2Int ToInt(this Vector2 origin)
         {
             return new Vector2Int(Mathf.RoundToInt(origin.x), Mathf.RoundToInt(origin.y));

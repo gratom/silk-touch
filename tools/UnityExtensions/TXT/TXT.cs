@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if UI_TMP
+using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -137,3 +138,4 @@ namespace Tools
         }
     }
 }
+#endif

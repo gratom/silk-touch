@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
@@ -7,19 +8,44 @@ using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 [InitializeOnLoad]
 public class SilkTouchDependencyResolver : EditorWindow
 {
-    private const string UniTaskPackageName = "com.cysharp.unitask";
-    private const string UniTaskGitUrl = "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask";
+    private class Dependency
+    {
+        public string Name;
+        public string PackageName;
+        public string InstallSource;
+        public bool IsInstalled;
+        public bool IsPackage;
+    }
+
+    private static readonly List<Dependency> dependencies = new List<Dependency>
+    {
+        new Dependency
+        {
+            Name = "UniTask",
+            PackageName = "com.cysharp.unitask",
+            InstallSource = "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
+            IsPackage = true
+        },
+        new Dependency
+        {
+            Name = "Unity UI (TMP)",
+            PackageName = "com.unity.ugui",
+            InstallSource = "com.unity.ugui",
+            IsPackage = true
+        }
+    };
 
     private static ListRequest listRequest;
     private static AddRequest addRequest;
+    private static int currentIndex = -1;
     private static bool isInstalling;
 
     static SilkTouchDependencyResolver()
     {
-        EditorApplication.delayCall += CheckPackage;
+        EditorApplication.delayCall += CheckPackages;
     }
 
-    private static void CheckPackage()
+    private static void CheckPackages()
     {
         listRequest = Client.List(true);
         EditorApplication.update += CheckListProgress;
@@ -33,16 +59,27 @@ public class SilkTouchDependencyResolver : EditorWindow
 
             if (listRequest.Status == StatusCode.Success)
             {
-                bool hasUniTask = false;
-                foreach (PackageInfo package in listRequest.Result)
+                bool missingDependencies = false;
+
+                for (int i = 0; i < dependencies.Count; i++)
                 {
-                    if (package.name == UniTaskPackageName)
+                    dependencies[i].IsInstalled = false;
+                    foreach (PackageInfo package in listRequest.Result)
                     {
-                        hasUniTask = true;
-                        break;
+                        if (package.name == dependencies[i].PackageName)
+                        {
+                            dependencies[i].IsInstalled = true;
+                            break;
+                        }
+                    }
+
+                    if (!dependencies[i].IsInstalled)
+                    {
+                        missingDependencies = true;
                     }
                 }
-                if (!hasUniTask)
+
+                if (missingDependencies)
                 {
                     ShowWindow();
                 }
@@ -55,27 +92,49 @@ public class SilkTouchDependencyResolver : EditorWindow
     public static void ShowWindow()
     {
         SilkTouchDependencyResolver window = GetWindow<SilkTouchDependencyResolver>("Silk Touch Setup");
-        window.minSize = new Vector2(400, 150);
-        window.maxSize = new Vector2(400, 150);
+        window.minSize = new Vector2(400, 200);
+        window.maxSize = new Vector2(400, 200);
         window.Show();
     }
 
     private void OnGUI()
     {
         GUILayout.Space(15);
-        EditorGUILayout.HelpBox("Silk Touch need UniTask.\nPlease install this dependency to ensure full functionality.",
+        EditorGUILayout.HelpBox("Silk Touch requires additional dependencies.\nPlease install missing packages to ensure full functionality.",
             MessageType.Warning
         );
 
         GUILayout.Space(10);
 
+        for (int i = 0; i < dependencies.Count; i++)
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(dependencies[i].Name, GUILayout.Width(120));
+
+            if (dependencies[i].IsInstalled)
+            {
+                GUI.color = Color.green;
+                EditorGUILayout.LabelField("[Installed]");
+                GUI.color = Color.white;
+            }
+            else
+            {
+                GUI.color = Color.red;
+                EditorGUILayout.LabelField("[Missing]");
+                GUI.color = Color.white;
+            }
+            EditorGUILayout.EndHorizontal();
+        }
+
+        GUILayout.Space(10);
+
         GUI.enabled = !isInstalling;
-        
+
         if (!isInstalling)
         {
-            if (GUILayout.Button("Install UniTask", GUILayout.Height(35)))
+            if (GUILayout.Button("Install Missing", GUILayout.Height(35)))
             {
-                InstallUniTask();
+                InstallNextDependency();
             }
         }
 
@@ -83,39 +142,56 @@ public class SilkTouchDependencyResolver : EditorWindow
 
         if (isInstalling)
         {
-            EditorGUILayout.HelpBox("Installing UniTask... Please, wait.", MessageType.Info);
+            EditorGUILayout.HelpBox("Installing dependencies... Please, wait.", MessageType.Info);
         }
     }
 
-    private void InstallUniTask()
+    private static void InstallNextDependency()
     {
-        isInstalling = true;
-        Debug.Log("[Silk Touch] Starting UniTask installation...");
-        addRequest = Client.Add(UniTaskGitUrl);
-        EditorApplication.update += InstallProgress;
+        currentIndex = -1;
+        for (int i = 0; i < dependencies.Count; i++)
+        {
+            if (!dependencies[i].IsInstalled)
+            {
+                currentIndex = i;
+                break;
+            }
+        }
+
+        if (currentIndex != -1)
+        {
+            isInstalling = true;
+            Debug.Log($"[Silk Touch] Starting installation: {dependencies[currentIndex].Name}...");
+            addRequest = Client.Add(dependencies[currentIndex].InstallSource);
+            EditorApplication.update += InstallProgress;
+        }
+        else
+        {
+            isInstalling = false;
+            if (HasOpenInstances<SilkTouchDependencyResolver>())
+            {
+                GetWindow<SilkTouchDependencyResolver>().Close();
+            }
+            AssetDatabase.Refresh();
+        }
     }
 
     private static void InstallProgress()
     {
         if (addRequest != null && addRequest.IsCompleted)
         {
-            isInstalling = false;
             EditorApplication.update -= InstallProgress;
 
             if (addRequest.Status == StatusCode.Success)
             {
                 Debug.Log($"[Silk Touch] Successfully installed: {addRequest.Result.packageId}");
-
-                if (HasOpenInstances<SilkTouchDependencyResolver>())
-                {
-                    GetWindow<SilkTouchDependencyResolver>().Close();
-                }
-
-                AssetDatabase.Refresh();
+                dependencies[currentIndex].IsInstalled = true;
+                InstallNextDependency();
             }
             else if (addRequest.Status >= StatusCode.Failure)
             {
-                Debug.LogError($"[Silk Touch] Failed to install UniTask: {addRequest.Error.message}");
+                Debug.LogError($"[Silk Touch] Failed to install {dependencies[currentIndex].Name}: {addRequest.Error.message}");
+                isInstalling = false;
             }
 
             addRequest = null;

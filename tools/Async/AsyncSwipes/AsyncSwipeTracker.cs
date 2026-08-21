@@ -1,4 +1,4 @@
-﻿#if UNITASK
+﻿#if UNITASK && UI_TMP
 
 using UnityEngine;
 using System;

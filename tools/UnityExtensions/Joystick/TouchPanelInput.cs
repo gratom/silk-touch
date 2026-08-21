@@ -1,3 +1,4 @@
+#if UI_TMP
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -51,3 +52,4 @@ namespace Tools
 
     }
 }
+#endif

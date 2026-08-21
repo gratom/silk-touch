@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if UI_TMP
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Tools
@@ -52,3 +53,4 @@ namespace Tools
 
     }
 }
+#endif

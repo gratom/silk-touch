@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+﻿#if UNITY_EDITOR && UI_TMP
 
 using UnityEditor;
 using UnityEditor.Overlays;

@@ -1,3 +1,4 @@
+#if UI_TMP
 using System;
 using Tools;
 using UnityEngine;
@@ -45,3 +46,4 @@ namespace Tools
         }
     }
 }
+#endif

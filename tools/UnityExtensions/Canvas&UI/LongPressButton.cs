@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿#if UI_TMP
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -96,3 +97,4 @@ namespace Tools
         }
     }
 }
+#endif

@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿#if UI_TMP
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,3 +39,4 @@ namespace Tools
         protected abstract void OnClickFunction();
     }
 }
+#endif

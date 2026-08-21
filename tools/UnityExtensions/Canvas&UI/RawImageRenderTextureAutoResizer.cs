@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if UI_TMP
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -105,3 +106,4 @@ public sealed class RawImageRenderTextureAutoResizer : MonoBehaviour
         return rect.size * scaleFactor;
     }
 }
+#endif

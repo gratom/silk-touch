@@ -1,5 +1,4 @@
-﻿//developer -> gratomov@gmail.com
-
+﻿#if UI_TMP
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -500,30 +499,6 @@ namespace Tools
             rect.rotation = Quaternion.Euler(0, 0, angle);
         }
 
-        // public static void SetAsArrow(this Image img, Vector2 start, Vector2 target)
-        // {
-        //     RectTransform rectTransform = img.rectTransform;
-        //
-        //     Vector2 oldPivot = rectTransform.pivot;
-        //     Vector2 newPivot = new Vector2(0.5f, 0);
-        //
-        //     if (oldPivot != newPivot)
-        //     {
-        //         Vector2 size = rectTransform.rect.size;
-        //         Vector2 deltaPivot = newPivot - oldPivot;
-        //         rectTransform.pivot = newPivot;
-        //         rectTransform.anchoredPosition += new Vector2(deltaPivot.x * size.x, deltaPivot.y * size.y);
-        //     }
-        //
-        //     rectTransform.position = start;
-        //     Vector2 direction = target - start;
-        //     float distance = direction.magnitude;
-        //
-        //     rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, distance);
-        //     float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        //     rectTransform.rotation = Quaternion.Euler(0, 0, angle - 90f);
-        // }
-
         public static void SetAsLineBetween2PointsLocal(this Image img, Vector2 startAnchoredPos, Vector2 endAnchoredPos, float thickness = 10)
         {
             if (img == null)
@@ -553,5 +528,5 @@ namespace Tools
             }
         }
     }
-
 }
+#endif
