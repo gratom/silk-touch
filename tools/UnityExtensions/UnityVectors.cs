@@ -9,6 +9,20 @@ namespace Tools
     public static class UnityVectorsTools
     {
 
+        public static Vector3 ClampLenght(this Vector3 vector, float lenghtMax)
+        {
+            float m = vector.magnitude;
+            float l = m.Clamp0ToMax(lenghtMax);
+            return vector.normalized * l;
+        }
+
+        public static Vector2 ClampLenght(this Vector2 vector, float lenghtMax)
+        {
+            float m = vector.magnitude;
+            float l = m.Clamp0ToMax(lenghtMax);
+            return vector.normalized * l;
+        }
+
         public static Vector3 WithX(this Vector3 vector, float newX)
         {
             return new Vector3(newX, vector.y, vector.z);

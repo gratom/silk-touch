@@ -29,6 +29,10 @@ public static class FolderTracker
 
     private static void GetProjectViewFolder()
     {
+        if (Application.isPlaying)
+        {
+            return;
+        }
         Type projectBrowserType = typeof(Editor).Assembly.GetType("UnityEditor.ProjectBrowser");
         if (projectBrowserType == null)
         {
