@@ -7,17 +7,32 @@ namespace Tools
 
     public static class MathExtensions
     {
+        public static int LoopAdd(this int i, int val, int cycle)
+        {
+            return Loop(i + val, cycle);
+        }
+
+        public static int Loop(this int i, int cycle)
+        {
+            int r = i % cycle;
+            if (r < 0)
+            {
+                r += cycle;
+            }
+            return r;
+        }
+
         public static bool IsInRange(this int number, int minValue, int maxValue)
         {
             return number >= minValue && number <= maxValue;
         }
-        
+
         public static bool HasFraction(this double number)
         {
             const double tolerance = 0.00001d;
             return Math.Abs(number - Math.Truncate(number)) > tolerance;
         }
-        
+
         public static float Sign(this float f)
         {
             return Mathf.Sign(f);
