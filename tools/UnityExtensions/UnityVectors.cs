@@ -19,7 +19,7 @@ namespace Tools
         public static Vector2 ClampLenght(this Vector2 vector, float lenghtMax)
         {
             float m = vector.magnitude;
-            float l = m.Clamp0ToMax(lenghtMax);
+            float l = m.Clamp(0, lenghtMax);
             return vector.normalized * l;
         }
 

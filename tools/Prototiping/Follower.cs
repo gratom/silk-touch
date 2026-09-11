@@ -1,53 +1,28 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Tools
 {
     public class Follower : MonoBehaviour
     {
-        public GameObject FollowThat;
-
-        private Coroutine followingCoroutineInstance;
-
-        #region public functions
-
-        public void StartFollow()
+        [SerializeField] private Transform followTarget;
+        public bool isFollowing;
+        
+        private void Update()
         {
-            if (followingCoroutineInstance == null)
+            if (!isFollowing)
             {
-                followingCoroutineInstance = StartCoroutine(FollowingCoroutine());
+                return;
+            }
+
+            if (followTarget != null)
+            {
+                transform.position = followTarget.position;
+                transform.rotation = followTarget.rotation;
+            }
+            else
+            {
+                isFollowing = false;
             }
         }
-
-        public void EndFollow()
-        {
-            if (followingCoroutineInstance != null)
-            {
-                StopCoroutine(followingCoroutineInstance);
-                followingCoroutineInstance = null;
-            }
-        }
-
-        #endregion public functions
-
-        #region private functions
-
-        private IEnumerator FollowingCoroutine()
-        {
-            while (true)
-            {
-                if (FollowThat != null)
-                {
-                    transform.position = FollowThat.transform.position;
-                }
-                else
-                {
-                    EndFollow();
-                }
-                yield return null;
-            }
-        }
-
-        #endregion private functions
     }
 }
