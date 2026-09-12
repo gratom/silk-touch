@@ -1,10 +1,12 @@
 #if UNITY_EDITOR
 
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
 namespace Tools.DependencyResolver
@@ -61,44 +63,50 @@ namespace Tools.DependencyResolver
                 return;
             }
             listRequest = Client.List(true);
-            EditorApplication.update += CheckListProgress;
+            onceAction = () => CheckListProgress(force);
+            EditorApplication.update += PostUpdate;
         }
 
-        private static void CheckListProgress()
+        private static Action onceAction;
+
+        private static void PostUpdate()
         {
             if (listRequest != null && listRequest.IsCompleted)
             {
-                EditorApplication.update -= CheckListProgress;
+                EditorApplication.update -= PostUpdate;
+                onceAction?.Invoke();
+            }
+        }
 
-                if (listRequest.Status == StatusCode.Success)
+        private static void CheckListProgress(bool force)
+        {
+            if (listRequest.Status == StatusCode.Success)
+            {
+                bool missingDependencies = false;
+                for (int i = 0; i < dependencies.Count; i++)
                 {
-                    bool missingDependencies = false;
-                    for (int i = 0; i < dependencies.Count; i++)
+                    dependencies[i].IsInstalled = false;
+                    foreach (PackageInfo package in listRequest.Result)
                     {
-                        dependencies[i].IsInstalled = false;
-                        foreach (PackageInfo package in listRequest.Result)
+                        if (package.name == dependencies[i].PackageName)
                         {
-                            if (package.name == dependencies[i].PackageName)
-                            {
-                                dependencies[i].IsInstalled = true;
-                                break;
-                            }
-                        }
-
-                        if (!dependencies[i].IsInstalled)
-                        {
-                            missingDependencies = true;
+                            dependencies[i].IsInstalled = true;
+                            break;
                         }
                     }
 
-                    if (missingDependencies)
+                    if (!dependencies[i].IsInstalled)
                     {
-                        ShowWindow();
+                        missingDependencies = true;
                     }
                 }
 
-                listRequest = null;
+                if (missingDependencies || force)
+                {
+                    ShowWindow();
+                }
             }
+            listRequest = null;
         }
 
         [MenuItem("SilkTouch/Dependencies")]
@@ -237,6 +245,7 @@ namespace Tools.DependencyResolver
             return true;
         }
     }
+
 }
 
 #endif
