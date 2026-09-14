@@ -32,7 +32,7 @@ namespace Tools
             public string shortcut = "%#l"; // Ctrl+Shift+L
         }
 
-        [MenuItem("Tools/Project Links/Settings", false, 0)]
+        [MenuItem("Tools/Q-Links Settings", false, 0)]
         public static void OpenOrCreateSettings()
         {
             ProjectLinksData asset = FindAsset();

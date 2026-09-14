@@ -9,7 +9,6 @@ using UnityEditor;
 
 namespace Tools
 {
-
     [ExecuteAlways]
     [RequireComponent(typeof(CanvasScaler))]
     public class DynamicCanvasScaler : MonoBehaviour
