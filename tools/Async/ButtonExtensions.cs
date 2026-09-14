@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if UI_TMP
+using System;
 using System.Threading;
 #if UNITASK
 using Cysharp.Threading.Tasks;
@@ -62,3 +63,4 @@ namespace Tools
 #endif
     }
 }
+#endif

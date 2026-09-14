@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if UI_TMP
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -242,3 +243,4 @@ namespace Tools
         }
     }
 }
+#endif
