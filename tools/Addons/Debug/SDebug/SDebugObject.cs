@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     public class SDebugObject
     {

@@ -4,7 +4,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     [RequireComponent(typeof(Text))]
     public class TextDependSelectable : MonoBehaviour

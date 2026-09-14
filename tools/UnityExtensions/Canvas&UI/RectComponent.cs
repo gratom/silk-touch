@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     public enum StartCoordinateType
     {

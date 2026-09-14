@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     [Serializable]
     public struct SerializableGuid :

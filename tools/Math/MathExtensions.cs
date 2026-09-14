@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
 
     public static class MathExtensions

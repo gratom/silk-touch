@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     public static class DictionaryExtensions
     {

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using TMPro;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     [InitializeOnLoad]
     public static class TMPInspectorOverlay

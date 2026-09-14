@@ -6,7 +6,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 #endif
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     /// <summary>
     /// Simple tool for quick delay action based on coroutine.

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 #endif
 using UnityEngine.UI;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     public static class ButtonExtensions
     {

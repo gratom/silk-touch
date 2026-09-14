@@ -3,7 +3,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Tools.DependencyResolver
+namespace SilkTouch.Tools.DependencyResolver
 {
     [FilePath("ProjectSettings/SilkTouchEditorConfig.asset", FilePathAttribute.Location.ProjectFolder)]
     public class SilkTouchEditorConfig : ScriptableSingleton<SilkTouchEditorConfig>

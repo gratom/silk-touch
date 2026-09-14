@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 
-namespace Tools.Anim
+namespace SilkTouch.Tools.Anim
 {
     /// <summary>
     /// Tool for convenient management of animator parameters

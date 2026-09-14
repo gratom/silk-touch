@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     public static class DateTimeExtensions
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     public static class EnumEnumerator
     {

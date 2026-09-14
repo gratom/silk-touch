@@ -3,7 +3,7 @@
 using System.IO;
 using UnityEngine.SceneManagement;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     /// <summary>
     /// Additional tools for working with scenes

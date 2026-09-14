@@ -4,9 +4,8 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
-
     public class VirtualTable
     {
         private const string URL_TEMPLATE = "https://docs.google.com/spreadsheets/d/{0}/export?format=csv&gid={1}";

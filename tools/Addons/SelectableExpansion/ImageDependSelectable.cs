@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     [RequireComponent(typeof(Image))]
     public class ImageDependSelectable : MonoBehaviour

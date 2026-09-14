@@ -3,7 +3,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     [CustomPropertyDrawer(typeof(SerializableDateTime))]
     public class SerializableDateTimePropertyDrawer : PropertyDrawer

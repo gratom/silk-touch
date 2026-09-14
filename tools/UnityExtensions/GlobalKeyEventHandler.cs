@@ -3,7 +3,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     [InitializeOnLoad]
     public static class GlobalKeyEventHandler

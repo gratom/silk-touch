@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using UnityEditor;
 #endif
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     [ExecuteAlways]
     [RequireComponent(typeof(CanvasScaler))]

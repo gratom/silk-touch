@@ -3,7 +3,7 @@ using System;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     public class SelectableExpansion : Selectable
     {

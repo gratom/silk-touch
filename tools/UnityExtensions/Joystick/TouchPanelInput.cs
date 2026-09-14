@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     [RequireComponent(typeof(Image))]
     public class TouchPanelInput : RectComponent, IPointerDownHandler, IPointerUpHandler

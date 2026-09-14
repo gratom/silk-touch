@@ -1,4 +1,4 @@
-﻿namespace Tools.Anim
+﻿namespace SilkTouch.Tools.Anim
 {
     public enum AnimatorActionType
     {

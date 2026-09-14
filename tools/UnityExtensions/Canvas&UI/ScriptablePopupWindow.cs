@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEditor.IMGUI.Controls;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     public class ScriptablePopupWindow : EditorWindow
     {

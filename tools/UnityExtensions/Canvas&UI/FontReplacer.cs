@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     public class FontReplacer : EditorWindow
     {

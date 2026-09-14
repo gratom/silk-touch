@@ -4,7 +4,7 @@ using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     [CustomEditor(typeof(Image))]
     [CanEditMultipleObjects]

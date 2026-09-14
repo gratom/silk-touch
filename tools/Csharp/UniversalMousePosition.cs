@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using UnityEngine;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     public static class UniversalMousePosition
     {

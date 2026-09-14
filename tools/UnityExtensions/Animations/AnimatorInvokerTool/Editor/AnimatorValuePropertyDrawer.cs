@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Tools.Anim.Editor
+namespace SilkTouch.Tools.Anim.Editor
 {
     [CustomPropertyDrawer(typeof(AnimatorValue))]
     public class AnimatorValuePropertyDrawer : PropertyDrawer

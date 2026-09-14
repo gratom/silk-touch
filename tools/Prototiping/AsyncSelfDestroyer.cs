@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     public class AsyncSelfDestroyer : MonoBehaviour
     {

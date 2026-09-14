@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions.Comparers;
 
-namespace Tools.Anim
+namespace SilkTouch.Tools.Anim
 {
     public class AnimatorInvoker : MonoBehaviour
     {

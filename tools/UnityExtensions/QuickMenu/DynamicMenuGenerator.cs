@@ -4,7 +4,7 @@ using System.Text;
 using UnityEditor;
 using UnityEngine;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     public static class DynamicMenuGenerator
     {
@@ -25,7 +25,7 @@ namespace Tools
             builder.AppendLine("using UnityEditor;");
             builder.AppendLine("using UnityEngine;");
             builder.AppendLine();
-            builder.AppendLine("namespace Tools");
+            builder.AppendLine("namespace SilkTouch.Tools.Generated");
             builder.AppendLine("{");
             builder.AppendLine("    public static class GeneratedProjectLinks");
             builder.AppendLine("    {");

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     public static class BuildFolderExporter
     {

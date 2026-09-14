@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     [InitializeOnLoad]
     public class SceneMouseTracker

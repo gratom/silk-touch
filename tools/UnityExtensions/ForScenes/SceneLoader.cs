@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     /// <summary>
     /// Wrapper tool for loading scenes and setting post-loading actions

@@ -2,19 +2,21 @@
 using UnityEngine;
 using UnityEditor;
 
-public static class DebugSelection
+namespace SilkTouch.Tools
 {
-    [MenuItem("Assets/Debug Selected Object Names")]
-    private static void DebugSelectedNames()
+    public static class DebugSelection
     {
-        Object[] selectedObjects = Selection.objects;
-        string names = "Selected Object Names: \n";
-        foreach (Object obj in selectedObjects)
+        [MenuItem("Assets/Debug Selected Object Names")]
+        private static void DebugSelectedNames()
         {
-            names += obj.name + ",\n";
+            Object[] selectedObjects = Selection.objects;
+            string names = "Selected Object Names: \n";
+            foreach (Object obj in selectedObjects)
+            {
+                names += obj.name + ",\n";
+            }
+            Debug.Log(names);
         }
-        Debug.Log(names);
     }
 }
-
 #endif

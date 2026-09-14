@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Tools.Anim
+namespace SilkTouch.Tools.Anim
 {
     [Serializable]
     public class AnimatorAction

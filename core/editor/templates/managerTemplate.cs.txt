@@ -1,0 +1,16 @@
+using System;
+using System.Threading.Tasks;
+
+namespace Global.Managers
+{
+    public class #SCRIPTNAME# : BaseManager
+    {
+        public override Type ManagerType => typeof(#SCRIPTNAME#);
+        public override bool IsFunctional => true;
+        protected override async Task<bool> OnInit()
+        {
+            //init your manager here and return "true", if all OK
+            return true;
+        }
+    }
+}

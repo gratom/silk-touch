@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEditor;
 using TMPro;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
 
     public class OptimizedTextWindow : EditorWindow

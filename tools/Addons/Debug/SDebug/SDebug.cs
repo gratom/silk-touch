@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
 
     public enum SDebugTags

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     public static class Pause
     {

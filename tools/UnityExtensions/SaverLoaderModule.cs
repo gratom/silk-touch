@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     /// <summary>
     /// Universal module for saving and loading any text information

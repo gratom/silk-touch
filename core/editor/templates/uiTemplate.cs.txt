@@ -1,0 +1,25 @@
+using System;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace Global.Components.UserInterface
+{
+    using Global.Managers.UserInterface;
+    using Managers.Datas;
+    using Tools;
+
+    [NamedBehavior]
+    public class #SCRIPTNAME# : BaseCloseableWindow
+    {
+        public override Type WindowType => typeof(#SCRIPTNAME#);
+
+        protected override void OnHide()
+        {
+        }
+
+        protected override void OnShow()
+        {
+        }
+    }
+
+}

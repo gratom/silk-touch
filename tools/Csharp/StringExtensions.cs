@@ -6,7 +6,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Android;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     public static class StringExtensions
     {

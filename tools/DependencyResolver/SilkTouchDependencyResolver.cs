@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.PlayerLoop;
 using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
-namespace Tools.DependencyResolver
+namespace SilkTouch.Tools.DependencyResolver
 {
     [InitializeOnLoad]
     public class SilkTouchDependencyResolver : EditorWindow

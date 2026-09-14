@@ -4,7 +4,7 @@ using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Tools.Swipes
+namespace SilkTouch.Tools.Swipes
 {
     public static class AsyncKeyboardSwipeTracker
     {

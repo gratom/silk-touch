@@ -3,14 +3,17 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
-public class GameStarter : MonoBehaviour
+namespace SilkTouch.Tools
 {
-    [MenuItem("Game/Start")]
-    private static void StartGameFromSpecificScene()
+    public class GameStarter : MonoBehaviour
     {
-        string scenePath = "Assets/Scenes/boot.unity";
-        EditorSceneManager.OpenScene(scenePath);
-        EditorApplication.isPlaying = true;
+        [MenuItem("Game/Start")]
+        private static void StartGameFromSpecificScene()
+        {
+            string scenePath = "Assets/Scenes/boot.unity";
+            EditorSceneManager.OpenScene(scenePath);
+            EditorApplication.isPlaying = true;
+        }
     }
 }
 #endif

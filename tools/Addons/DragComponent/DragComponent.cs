@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Tools.ScrollComponent
+namespace SilkTouch.Tools.ScrollComponent
 {
     public class DragComponent : RectComponent, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerClickHandler, IScrollHandler
     {

@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     [CustomEditor(typeof(UILineChart))]
     [CanEditMultipleObjects]

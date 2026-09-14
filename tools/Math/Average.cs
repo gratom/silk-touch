@@ -1,9 +1,7 @@
-﻿//developer -> gratomov@gmail.com
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     /// <summary>
     /// Base class for all average types

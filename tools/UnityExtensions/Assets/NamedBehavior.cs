@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace Tools
+namespace SilkTouch.Tools
 {
 #if UNITY_EDITOR
 

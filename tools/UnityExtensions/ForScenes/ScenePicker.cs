@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     using UMP = UniversalMousePosition;
 

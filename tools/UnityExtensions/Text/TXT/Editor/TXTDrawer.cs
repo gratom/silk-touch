@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     [CustomPropertyDrawer(typeof(TXT))]
     public class TXTDrawer : PropertyDrawer

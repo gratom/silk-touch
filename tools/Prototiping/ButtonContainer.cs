@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     [RequireComponent(typeof(Button))]
     public abstract class ButtonContainer : MonoBehaviour

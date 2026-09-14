@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
 
     [System.Serializable]

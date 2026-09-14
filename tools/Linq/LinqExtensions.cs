@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Tools;
-using UnityEngine;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace System
+namespace SilkTouch.Tools
 {
     public static class LinqExtensions
     {

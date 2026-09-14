@@ -1,9 +1,8 @@
 #if UI_TMP
 using System;
-using Tools;
 using UnityEngine;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     public class Joystick : MonoBehaviour
     {

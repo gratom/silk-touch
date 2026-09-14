@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
 
     using UnityEngine;

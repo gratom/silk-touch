@@ -1,12 +1,10 @@
 ﻿#if UNITY_EDITOR && UI_TMP
 
-using System;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Tools.UIChecker
+namespace SilkTouch.Tools.UIChecker
 {
     public class RTCheckerWindow : EditorWindow
     {

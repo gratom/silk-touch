@@ -8,7 +8,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     public static class AssetExtensions
     {

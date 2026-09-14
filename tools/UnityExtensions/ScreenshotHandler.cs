@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     public class ScreenshotHandler
     {

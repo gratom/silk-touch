@@ -2,7 +2,7 @@
 using UnityEditor;
 using Object = UnityEngine.Object;
 
-namespace Tools.Anim.Editor
+namespace SilkTouch.Tools.Anim.Editor
 {
     using EDGL = EditorGUILayout;
 

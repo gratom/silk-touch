@@ -3,7 +3,7 @@ using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Tools
+namespace SilkTouch.Tools
 {
     public static class AsyncSafeBridgeExtensions
     {

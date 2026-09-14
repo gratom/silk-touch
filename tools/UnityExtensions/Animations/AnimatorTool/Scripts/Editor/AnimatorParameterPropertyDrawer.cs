@@ -7,7 +7,7 @@ using System.Linq;
 using UnityEditor.Animations;
 using ACPT = UnityEngine.AnimatorControllerParameterType;
 
-namespace Tools.Anim.Editor
+namespace SilkTouch.Tools.Anim.Editor
 {
     [CustomPropertyDrawer(typeof(AnimatorParameter))]
     public class AnimatorParameterPropertyDrawer : PropertyDrawer
