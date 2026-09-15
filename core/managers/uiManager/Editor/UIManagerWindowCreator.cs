@@ -9,10 +9,20 @@ namespace SilkTouch.UI
     {
         static UIManagerWindowCreator()
         {
+#if UNITY_6000_6_OR_NEWER
+            EditorApplication.hierarchyWindowItemByEntityIdOnGUI += OnHierarchyGUI;
+#else
             EditorApplication.hierarchyWindowItemOnGUI += OnHierarchyGUI;
+#endif
         }
 
-        private static void OnHierarchyGUI(int instanceID, Rect selectionRect)
+        private static void OnHierarchyGUI(
+#if UNITY_6000_6_OR_NEWER
+            EntityId entityID
+#else
+            int instanceID
+#endif
+            , Rect selectionRect)
         {
             Event currentEvent = Event.current;
 
@@ -20,7 +30,11 @@ namespace SilkTouch.UI
             {
                 if (selectionRect.Contains(currentEvent.mousePosition))
                 {
+#if UNITY_6000_6_OR_NEWER
+                    GameObject targetGO = EditorUtility.EntityIdToObject(entityID) as GameObject;
+#else
                     GameObject targetGO = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
+#endif
                     if (targetGO != null && targetGO.GetComponent<UIManager>() != null && ContainsBaseWindowScript())
                     {
                         ProcessDrag(currentEvent, targetGO);
