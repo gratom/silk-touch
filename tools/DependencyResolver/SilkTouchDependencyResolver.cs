@@ -38,6 +38,13 @@ namespace SilkTouch.Tools.DependencyResolver
                 PackageName = "com.unity.ugui",
                 InstallSource = "com.unity.ugui",
                 IsPackage = true
+            },
+            new Dependency
+            {
+                Name = "Newtonsoft Json",
+                PackageName = "com.unity.nuget.newtonsoft-json",
+                InstallSource = "com.unity.nuget.newtonsoft-json@3.2.1",
+                IsPackage = true
             }
         };
 
