@@ -14,13 +14,21 @@ namespace SilkTouch.Tools.DependencyResolver
     [InitializeOnLoad]
     public class SilkTouchDependencyResolver : EditorWindow
     {
+        private enum DependencyStatus
+        {
+            Missing,
+            LowVersion,
+            Ok
+        }
+
         private class Dependency
         {
             public string Name;
             public string PackageName;
             public string InstallSource;
-            public bool IsInstalled;
+            public string RequiredVersion;
             public bool IsPackage;
+            public DependencyStatus Status;
         }
 
         private static readonly List<Dependency> dependencies = new List<Dependency>
@@ -44,6 +52,7 @@ namespace SilkTouch.Tools.DependencyResolver
                 Name = "Newtonsoft Json",
                 PackageName = "com.unity.nuget.newtonsoft-json",
                 InstallSource = "com.unity.nuget.newtonsoft-json@3.2.1",
+                RequiredVersion = "3.2.1",
                 IsPackage = true
             }
         };
@@ -69,7 +78,7 @@ namespace SilkTouch.Tools.DependencyResolver
             {
                 return;
             }
-            listRequest = Client.List(true);
+            listRequest = Client.List(true, true);
             onceAction = () => CheckListProgress(force);
             EditorApplication.update += PostUpdate;
         }
@@ -89,31 +98,75 @@ namespace SilkTouch.Tools.DependencyResolver
         {
             if (listRequest.Status == StatusCode.Success)
             {
-                bool missingDependencies = false;
+                bool hasIssues = false;
                 for (int i = 0; i < dependencies.Count; i++)
                 {
-                    dependencies[i].IsInstalled = false;
+                    dependencies[i].Status = DependencyStatus.Missing;
                     foreach (PackageInfo package in listRequest.Result)
                     {
                         if (package.name == dependencies[i].PackageName)
                         {
-                            dependencies[i].IsInstalled = true;
+                            dependencies[i].Status = IsVersionSatisfied(package.version, dependencies[i].RequiredVersion)
+                                ? DependencyStatus.Ok
+                                : DependencyStatus.LowVersion;
                             break;
                         }
                     }
 
-                    if (!dependencies[i].IsInstalled)
+                    if (dependencies[i].Status != DependencyStatus.Ok)
                     {
-                        missingDependencies = true;
+                        hasIssues = true;
                     }
                 }
 
-                if (missingDependencies || force)
+                if (hasIssues || force)
                 {
                     ShowWindow();
                 }
             }
             listRequest = null;
+        }
+
+        private static bool IsVersionSatisfied(string installedVersion, string requiredVersion)
+        {
+            if (string.IsNullOrEmpty(requiredVersion))
+            {
+                return true;
+            }
+
+            return CompareVersions(installedVersion, requiredVersion) >= 0;
+        }
+
+        private static int CompareVersions(string a, string b)
+        {
+            int[] va = ParseVersion(a);
+            int[] vb = ParseVersion(b);
+            for (int i = 0; i < 3; i++)
+            {
+                if (va[i] != vb[i])
+                {
+                    return va[i].CompareTo(vb[i]);
+                }
+            }
+            return 0;
+        }
+
+        private static int[] ParseVersion(string version)
+        {
+            int[] result = { 0, 0, 0 };
+            if (string.IsNullOrEmpty(version))
+            {
+                return result;
+            }
+
+            string core = version.Split('-', '+')[0];
+            string[] parts = core.Split('.');
+            for (int i = 0; i < parts.Length && i < 3; i++)
+            {
+                int.TryParse(parts[i], out result[i]);
+            }
+
+            return result;
         }
 
         [MenuItem("SilkTouch/Dependencies")]
@@ -140,10 +193,15 @@ namespace SilkTouch.Tools.DependencyResolver
 
         private void OnGUI()
         {
+            bool allInstalled = IsAllDependenciesInstalled();
+
             GUILayout.Space(15);
-            EditorGUILayout.HelpBox("Silk Touch requires additional dependencies.\nPlease install missing packages to ensure full functionality.",
-                MessageType.Warning
-            );
+            if (!allInstalled)
+            {
+                EditorGUILayout.HelpBox("Silk Touch requires additional dependencies.\nPlease install missing packages to ensure full functionality.",
+                    MessageType.Warning
+                );
+            }
 
             GUILayout.Space(10);
 
@@ -152,18 +210,22 @@ namespace SilkTouch.Tools.DependencyResolver
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(dependencies[i].Name, GUILayout.Width(120));
 
-                if (dependencies[i].IsInstalled)
+                switch (dependencies[i].Status)
                 {
-                    GUI.color = Color.green;
-                    EditorGUILayout.LabelField("[Installed]");
-                    GUI.color = Color.white;
+                    case DependencyStatus.Ok:
+                        GUI.color = Color.green;
+                        EditorGUILayout.LabelField("[Installed]");
+                        break;
+                    case DependencyStatus.LowVersion:
+                        GUI.color = Color.yellow;
+                        EditorGUILayout.LabelField("[Low version]");
+                        break;
+                    default:
+                        GUI.color = Color.red;
+                        EditorGUILayout.LabelField("[Missing]");
+                        break;
                 }
-                else
-                {
-                    GUI.color = Color.red;
-                    EditorGUILayout.LabelField("[Missing]");
-                    GUI.color = Color.white;
-                }
+                GUI.color = Color.white;
                 EditorGUILayout.EndHorizontal();
             }
 
@@ -171,7 +233,7 @@ namespace SilkTouch.Tools.DependencyResolver
 
             GUI.enabled = !isInstalling;
 
-            if (!isInstalling)
+            if (!isInstalling && !allInstalled)
             {
                 if (GUILayout.Button("Install Missing", GUILayout.Height(35)))
                 {
@@ -192,7 +254,7 @@ namespace SilkTouch.Tools.DependencyResolver
             currentIndex = -1;
             for (int i = 0; i < dependencies.Count; i++)
             {
-                if (!dependencies[i].IsInstalled)
+                if (dependencies[i].Status != DependencyStatus.Ok)
                 {
                     currentIndex = i;
                     break;
@@ -226,7 +288,7 @@ namespace SilkTouch.Tools.DependencyResolver
                 if (addRequest.Status == StatusCode.Success)
                 {
                     Debug.Log($"[Silk Touch] Successfully installed: {addRequest.Result.packageId}");
-                    dependencies[currentIndex].IsInstalled = true;
+                    dependencies[currentIndex].Status = DependencyStatus.Ok;
                     InstallNextDependency();
                 }
                 else if (addRequest.Status >= StatusCode.Failure)
@@ -243,7 +305,7 @@ namespace SilkTouch.Tools.DependencyResolver
         {
             for (int i = 0; i < dependencies.Count; i++)
             {
-                if (!dependencies[i].IsInstalled)
+                if (dependencies[i].Status != DependencyStatus.Ok)
                 {
                     return false;
                 }
