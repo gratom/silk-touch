@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 namespace SilkTouch.Managers.Data
 {
     [Serializable]
-    public class DynamicData
+    public class DynamicData : IDynamicData
     {
         [SerializeField][Storage(Storage.StoragePathType.applicationFolder, "saves")]
         private GameData gameData;

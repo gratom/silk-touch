@@ -10,7 +10,7 @@ namespace SilkTouch.UI
 
     public abstract class BaseCloseableWindow : BaseWindow
     {
-        protected DataManager dataManager => Services.GetManager<DataManager>();
+        protected IDataManager dataManager => Services.GetManager<IDataManager>();
         protected UIManager uiManager => Services.GetManager<UIManager>();
 
         #region buttons functions

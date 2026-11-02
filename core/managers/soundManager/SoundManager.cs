@@ -45,7 +45,7 @@ namespace SilkTouch.Sounds
 
         private void OnUnpaused()
         {
-            if (Services.GetManager<DataManager>().DynamicData.Settings.sounds)
+            if (Services.GetManager<IDataManager>().DynamicData.Settings.sounds)
             {
                 foreach (List<AudioSource> list in sourcesByType.Values)
                 foreach (AudioSource source in list)
@@ -56,7 +56,7 @@ namespace SilkTouch.Sounds
                     }
                 }
             }
-            if (Services.GetManager<DataManager>().DynamicData.Settings.music)
+            if (Services.GetManager<IDataManager>().DynamicData.Settings.music)
             {
                 ambient.UnPause();
             }
@@ -64,7 +64,7 @@ namespace SilkTouch.Sounds
 
         public void CheckMusic()
         {
-            if (Services.GetManager<DataManager>().DynamicData.Settings.music)
+            if (Services.GetManager<IDataManager>().DynamicData.Settings.music)
             {
                 if (!ambient.UnPause())
                 {
@@ -86,7 +86,7 @@ namespace SilkTouch.Sounds
 
             if (setting == PlayingSetting.Ambient)
             {
-                if (Services.GetManager<DataManager>().DynamicData.Settings.music)
+                if (Services.GetManager<IDataManager>().DynamicData.Settings.music)
                 {
                     ambient.Play(clip, transform, volume: volumeDictionary[type]);
                 }
@@ -150,7 +150,7 @@ namespace SilkTouch.Sounds
 
         private void PlaySource(AudioSource source, AudioClip clip, PlayingSetting setting, float volume)
         {
-            if (Services.GetManager<DataManager>().DynamicData.Settings.sounds)
+            if (Services.GetManager<IDataManager>().DynamicData.Settings.sounds)
             {
                 source.clip = clip;
                 source.loop = setting == PlayingSetting.Loop;

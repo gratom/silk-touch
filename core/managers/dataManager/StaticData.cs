@@ -5,7 +5,7 @@ namespace SilkTouch.Managers.Data
     using Localization;
 
     [CreateAssetMenu(fileName = "StaticData", menuName = "Scriptables/Static data", order = 51)]
-    public class StaticData : ScriptableObject
+    public class StaticData : ScriptableObject, IStaticData
     {
         [SerializeField] private string dynamicDataLocation = "dynamicData";
         [SerializeField] private GameDataScriptableWrapper defaultGameData;

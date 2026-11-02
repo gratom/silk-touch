@@ -3,22 +3,48 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
+
 using UnityEngine;
 
 namespace SilkTouch.Managers.Data
 {
     using Tools;
+    using Localization;
     using Helper = StorageSaveLoadHelper;
 
-    public sealed class DataManager : BaseManager
+    public interface IDataManager : IBaseManager
+    {
+        IStaticData StaticData { get; }
+        IDynamicData DynamicData { get; }
+    }
+
+    public interface IDynamicData
+    {
+        public GameData GameData { get; set; }
+
+        public SettingsData Settings { get; }
+    }
+
+    public interface IStaticData
+    {
+        public string DynamicDataLocation { get; }
+        public GameDataScriptableWrapper DefaultGameData { get; }
+        public LocalizationData LocalizationData { get; }
+        public GameBalanceData Balance { get; }
+    }
+
+    public abstract class CoreDataManager<TStatic, TDynamic> : BaseManager, IDataManager where TStatic : IStaticData where TDynamic : IDynamicData, new()
     {
 #pragma warning disable
-        [SerializeField] private StaticData staticData;
-        [SerializeField][CombinedStorage] private DynamicData dynamicData;
+        [SerializeField] private TStatic staticData;
+        [SerializeField][CombinedStorage] private TDynamic dynamicData;
 #pragma warning restore
 
-        public override Type ManagerType => typeof(DataManager);
+        public override Type ManagerType => typeof(IDataManager);
 
         public override bool IsFunctional => true;
 
@@ -26,12 +52,12 @@ namespace SilkTouch.Managers.Data
         /// Data for stable setting, like default settings, URLs, non-changable enemy damage,
         /// constants, something, that you not change after build
         /// </summary>
-        public StaticData StaticData => staticData;
+        public IStaticData StaticData => staticData;
 
         /// <summary>
         /// Data for changable values, like money, score, count of boosts, power ups, etc
         /// </summary>
-        public DynamicData DynamicData => dynamicData;
+        public IDynamicData DynamicData => dynamicData;
 
         #region Uniny functions
 
@@ -103,7 +129,7 @@ namespace SilkTouch.Managers.Data
         private void SaveDynamicData()
         {
             OnBeforeSave();
-            FieldInfo dynamicDataField = typeof(DataManager).GetFields(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(x => x.Name == "dynamicData");
+            FieldInfo dynamicDataField = typeof(CoreDataManager<TStatic, TDynamic>).GetFields(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(x => x.Name == "dynamicData");
             if (dynamicDataField != null)
             {
                 if (dynamicDataField.GetCustomAttribute<CombinedStorage>() != null)
@@ -147,12 +173,12 @@ namespace SilkTouch.Managers.Data
 
         private void LoadDynamicData()
         {
-            FieldInfo dynamicDataField = typeof(DataManager).GetFields(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(x => x.Name == "dynamicData");
+            FieldInfo dynamicDataField = typeof(CoreDataManager<TStatic, TDynamic>).GetFields(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(x => x.Name == "dynamicData");
             if (dynamicDataField != null)
             {
                 if (dynamicDataField.GetCustomAttribute<CombinedStorage>() != null)
                 {
-                    dynamicData = (DynamicData)MakeDifferentLoad(staticData.DynamicDataLocation, dynamicDataField);
+                    dynamicData = (TDynamic)MakeDifferentLoad(staticData.DynamicDataLocation, dynamicDataField);
                 }
                 else
                 {
@@ -205,4 +231,6 @@ namespace SilkTouch.Managers.Data
 
         #endregion private functions
     }
+
+
 }

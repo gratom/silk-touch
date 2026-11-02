@@ -33,7 +33,7 @@ namespace SilkTouch.Managers.Game
 
         public void ExitGame()
         {
-            Services.GetManager<DataManager>().DynamicData.GameData = CurrentGame;
+            Services.GetManager<IDataManager>().DynamicData.GameData = CurrentGame;
         }
 
         public void GotoStage(GameData.GameStage stage)

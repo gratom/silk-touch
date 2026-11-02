@@ -32,7 +32,7 @@ namespace SilkTouch.Managers
         {
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
             Pause.TimeScaleFollowPause = true;
-            Services.GetManager<DataManager>().StaticData.Balance.InitForRuntime();
+            Services.GetManager<IDataManager>().StaticData.Balance.InitForRuntime();
             ContinueGame();
 
             //all another after game loading
@@ -42,7 +42,7 @@ namespace SilkTouch.Managers
         private void Update()
         {
             aveFPS.AddNext(Time.unscaledDeltaTime);
-            FPS = aveFPS.AverageIgnoreSpikes.Inv().Clamp(30, 60);
+            FPS = aveFPS.AverageIgnoreSpikes().Inv().Clamp(30, 60);
         }
 
         public void StartNewGame()
@@ -53,22 +53,22 @@ namespace SilkTouch.Managers
         public void ContinueGame()
         {
             //creating new data (full, from zero)
-            if (Services.GetManager<DataManager>().DynamicData.GameData == null || !Services.GetManager<DataManager>().DynamicData.GameData.isInit)
+            if (Services.GetManager<IDataManager>().DynamicData.GameData == null || !Services.GetManager<IDataManager>().DynamicData.GameData.isInit)
             {
                 //TODO make data versioning
                 Debug.Log("data is null. create new");
-                Services.GetManager<DataManager>().DynamicData.GameData = Services.GetManager<DataManager>().StaticData.DefaultGameData.GetCopyOfData();
+                Services.GetManager<IDataManager>().DynamicData.GameData = Services.GetManager<IDataManager>().StaticData.DefaultGameData.GetCopyOfData();
             }
 
             CheckUpdate();
-            Services.GetManager<DataManager>().DynamicData.GameData.PostInitData();
-            Services.GetManager<GameManager>().StartGame(Services.GetManager<DataManager>().DynamicData.GameData);
+            Services.GetManager<IDataManager>().DynamicData.GameData.PostInitData();
+            Services.GetManager<GameManager>().StartGame(Services.GetManager<IDataManager>().DynamicData.GameData);
         }
 
         private void CheckUpdate()
         {
-            List<BaseStageData> datasListCurrent = Services.GetManager<DataManager>().DynamicData.GameData.GetAllDataAsList();
-            List<BaseStageData> datasListDefault = Services.GetManager<DataManager>().StaticData.DefaultGameData.GetCopyOfData().GetAllDataAsList();
+            List<BaseStageData> datasListCurrent = Services.GetManager<IDataManager>().DynamicData.GameData.GetAllDataAsList();
+            List<BaseStageData> datasListDefault = Services.GetManager<IDataManager>().StaticData.DefaultGameData.GetCopyOfData().GetAllDataAsList();
 
             for (int i = 0; i < datasListCurrent.Count; i++)
             {
@@ -78,7 +78,7 @@ namespace SilkTouch.Managers
                 {
                     if (defaultData.Version > stageData.Version) //TODO - here is simple add default data to new fields, can make better, with continuous update
                     {
-                        Services.GetManager<DataManager>().DynamicData.GameData.SetData(defaultData);
+                        Services.GetManager<IDataManager>().DynamicData.GameData.SetData(defaultData);
                     }
                 }
             }

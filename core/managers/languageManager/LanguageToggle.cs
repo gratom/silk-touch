@@ -44,7 +44,7 @@ namespace SilkTouch.Localization
         }
         public void Refresh()
         {
-            toggle.SetIsOnWithoutNotify(Services.GetManager<DataManager>().DynamicData.Settings.CurrentLanguage == language);
+            toggle.SetIsOnWithoutNotify(Services.GetManager<IDataManager>().DynamicData.Settings.CurrentLanguage == language);
         }
     }
 }

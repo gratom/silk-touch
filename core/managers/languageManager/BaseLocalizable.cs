@@ -14,13 +14,13 @@ namespace SilkTouch.Localization
 
         public void Init()
         {
-            Services.GetManager<DataManager>().DynamicData.Settings.OnLanguageChange += OnLanguageChange;
+            Services.GetManager<IDataManager>().DynamicData.Settings.OnLanguageChange += OnLanguageChange;
             LanguageChangeAction(Services.GetManager<LanguageManager>().GetTextByID(key));
         }
 
         public void UnInit()
         {
-            Services.GetManager<DataManager>().DynamicData.Settings.OnLanguageChange -= OnLanguageChange;
+            Services.GetManager<IDataManager>().DynamicData.Settings.OnLanguageChange -= OnLanguageChange;
         }
 
         private void OnLanguageChange(GT.Language language)

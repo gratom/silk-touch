@@ -50,7 +50,7 @@ namespace SilkTouch.Localization
         {
             if (dictionaryContainers.ContainsKey(key))
             {
-                return dictionaryContainers[key].GetTextByLanguage(Services.GetManager<DataManager>().DynamicData.Settings.CurrentLanguage);
+                return dictionaryContainers[key].GetTextByLanguage(Services.GetManager<IDataManager>().DynamicData.Settings.CurrentLanguage);
             }
             return key;
         }
