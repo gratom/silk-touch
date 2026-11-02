@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace SilkTouch.Tools
@@ -7,12 +7,17 @@ namespace SilkTouch.Tools
     /// Base class for all average types
     /// </summary>
     /// <typeparam name="T">The type of object to be averaged</typeparam>
-    public abstract class AbstractAverage<T> where T : new()
+    public abstract class AbstractAverage<T>
     {
         /// <summary>
-        /// Number of values to average
+        /// Capacity of the inner buffer
         /// </summary>
-        public int Count => All.Length;
+        public int Capacity => All.Length;
+
+        /// <summary>
+        /// Number of slots actually filled with real values (bounded by Capacity)
+        /// </summary>
+        public int FilledCount { get; private set; }
 
         /// <summary>
         /// Average value
@@ -23,19 +28,8 @@ namespace SilkTouch.Tools
         /// Array for all values
         /// </summary>
         public readonly T[] All;
-        public int Counter
-        {
-            get => counter;
-            private set
-            {
-                counter = value;
-                if (counter >= All.Length)
-                {
-                    counter = 0;
-                }
-            }
-        }
-        private int counter = 0;
+
+        private int counter;
 
         protected AbstractAverage(int count = 5)
         {
@@ -49,14 +43,16 @@ namespace SilkTouch.Tools
         {
             for (int i = 0; i < All.Length; i++)
             {
-                All[i] = new T();
+                All[i] = default;
             }
+            counter = 0;
+            FilledCount = 0;
         }
 
         public List<T> GetAsRow()
         {
-            List<T> row = new List<T>(All.Length);
-            for (int i = 0; i < All.Length; i++)
+            List<T> row = new List<T>(FilledCount);
+            for (int i = 0; i < FilledCount; i++)
             {
                 int index = (i + counter - 1 + All.Length) % All.Length;
                 row.Add(All[index]);
@@ -70,7 +66,12 @@ namespace SilkTouch.Tools
         /// </summary>
         public void AddNext(T value)
         {
-            All[Counter++] = value;
+            All[counter] = value;
+            counter = counter + 1 == All.Length ? 0 : counter + 1;
+            if (FilledCount < All.Length)
+            {
+                FilledCount++;
+            }
         }
     }
 
@@ -87,38 +88,49 @@ namespace SilkTouch.Tools
         {
             get
             {
-                float sum = 0;
-                int indexes = 0;
-                foreach (float value in All)
+                if (FilledCount == 0)
                 {
-                    if (value != 0)
-                    {
-                        sum += value;
-                        indexes++;
-                    }
+                    return 0f;
                 }
-                return indexes != 0 ? sum / indexes : 0;
+
+                float sum = 0f;
+                for (int i = 0; i < FilledCount; i++)
+                {
+                    sum += All[i];
+                }
+                return sum / FilledCount;
             }
         }
 
-        public float AverageIgnoreSpikes
+        public float AverageIgnoreSpikes(float ignoreVal = 0.15f)
         {
-            get
+            if (FilledCount == 0)
             {
-                float aver = Average;
-                float sum = 0;
-                int indexes = 0;
-                foreach (float value in All)
-                {
-                    float div = aver / value;
-                    if (value != 0 && div > 0.85f && div < 1.15f)
-                    {
-                        sum += value;
-                        indexes++;
-                    }
-                }
-                return indexes != 0 ? sum / indexes : 0;
+                return 0f;
             }
+
+            float aver = Average;
+            float sum = 0f;
+            int indexes = 0;
+
+            float min = 1 - ignoreVal;
+            float max = 1 + ignoreVal;
+            for (int i = 0; i < FilledCount; i++)
+            {
+                float value = All[i];
+                if (value == 0f)
+                {
+                    continue;
+                }
+
+                float div = aver / value;
+                if (div > min && div < max)
+                {
+                    sum += value;
+                    indexes++;
+                }
+            }
+            return indexes != 0 ? sum / indexes : 0f;
         }
     }
 
@@ -135,17 +147,17 @@ namespace SilkTouch.Tools
         {
             get
             {
-                int sum = 0;
-                int indexes = 0;
-                foreach (int value in All)
+                if (FilledCount == 0)
                 {
-                    if (value != 0)
-                    {
-                        sum += value;
-                        indexes++;
-                    }
+                    return 0;
                 }
-                return indexes != 0 ? sum / indexes : 0;
+
+                int sum = 0;
+                for (int i = 0; i < FilledCount; i++)
+                {
+                    sum += All[i];
+                }
+                return sum / FilledCount;
             }
         }
     }
@@ -163,17 +175,17 @@ namespace SilkTouch.Tools
         {
             get
             {
-                Vector2 sum = Vector2.zero;
-                int indexes = 0;
-                foreach (Vector2 value in All)
+                if (FilledCount == 0)
                 {
-                    if (value != Vector2.zero)
-                    {
-                        sum += value;
-                        indexes++;
-                    }
+                    return Vector2.zero;
                 }
-                return indexes != 0 ? sum / indexes : Vector2.zero;
+
+                Vector2 sum = Vector2.zero;
+                for (int i = 0; i < FilledCount; i++)
+                {
+                    sum += All[i];
+                }
+                return sum / FilledCount;
             }
         }
     }
@@ -191,17 +203,17 @@ namespace SilkTouch.Tools
         {
             get
             {
-                Vector3 sum = Vector3.zero;
-                int indexes = 0;
-                foreach (Vector3 value in All)
+                if (FilledCount == 0)
                 {
-                    if (value != Vector3.zero)
-                    {
-                        sum += value;
-                        indexes++;
-                    }
+                    return Vector3.zero;
                 }
-                return indexes != 0 ? sum / indexes : Vector3.zero;
+
+                Vector3 sum = Vector3.zero;
+                for (int i = 0; i < FilledCount; i++)
+                {
+                    sum += All[i];
+                }
+                return sum / FilledCount;
             }
         }
     }
