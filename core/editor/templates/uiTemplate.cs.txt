@@ -2,11 +2,10 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Global.Components.UserInterface
+namespace SilkTouch.Components.UserInterface
 {
-    using Global.Managers.UserInterface;
-    using Managers.Datas;
     using Tools;
+    using UI;
 
     [NamedBehavior]
     public class #SCRIPTNAME# : BaseCloseableWindow
