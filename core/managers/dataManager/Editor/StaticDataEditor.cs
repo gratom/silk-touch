@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SilkTouch.Managers.Data
 {
-    [CustomEditor(typeof(StaticData))]
+    [CustomEditor(typeof(BaseStaticData))]
     public class StaticDataEditor : Editor
     {
         public override void OnInspectorGUI()

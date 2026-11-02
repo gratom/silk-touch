@@ -4,14 +4,15 @@ using UnityEngine.Serialization;
 
 namespace SilkTouch.Managers.Data
 {
+
     [Serializable]
-    public class DynamicData : IDynamicData
+    public abstract class BaseDynamicData : IDynamicData
     {
         [SerializeField][Storage(Storage.StoragePathType.applicationFolder, "saves")]
-        private GameData gameData;
+        protected GameData gameData;
 
         [SerializeField][Storage(Storage.StoragePathType.playerPrefs, "Settings")]
-        private SettingsData settings = new SettingsData();
+        protected SettingsData settings = new SettingsData();
 
         public GameData GameData
         {
