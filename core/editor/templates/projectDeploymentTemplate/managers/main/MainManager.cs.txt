@@ -1,0 +1,23 @@
+using System;
+
+namespace SilkTouch.Managers
+{
+    using Components.UserInterface;
+    using Localization;
+    using Data;
+    using UI;
+
+    public class MainManager : CoreMainManager
+    {
+        public override void GameEntryPoint()
+        {
+            Services.GetManager<LanguageManager>().RefreshLanguages();
+            Services.GetManager<UIManager>().ShowWindow<MainWindow>();
+        }
+
+        public override void SetupTo(BaseGameData current, BaseGameData latestVersion, Action<BaseGameData> setup)
+        {
+            setup(latestVersion);
+        }
+    }
+}

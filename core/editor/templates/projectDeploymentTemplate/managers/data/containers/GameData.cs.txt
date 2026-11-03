@@ -1,0 +1,9 @@
+using System;
+
+namespace SilkTouch.Managers.Data
+{
+    [Serializable]
+    public class GameData : BaseGameData
+    {
+    }
+}

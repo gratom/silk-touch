@@ -1,0 +1,16 @@
+using System;
+using UnityEngine;
+
+namespace SilkTouch.Managers.Data
+{
+    [CreateAssetMenu(fileName = "WrapGameData", menuName = "Scriptables/Game data wrapper", order = 51)]
+    public class GameDataScriptableWrapper : BaseGameDataScriptableWrapper
+    {
+        [SerializeField] private GameData defaultGameData;
+
+        public override BaseGameData GetCopyOfData()
+        {
+            return defaultGameData.Copy();
+        }
+    }
+}

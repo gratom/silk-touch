@@ -1,0 +1,23 @@
+using System;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace SilkTouch.Components.UserInterface
+{
+    using Tools;
+    using UI;
+
+    [NamedBehavior]
+    public class MainWindow : BaseCloseableWindow
+    {
+        public override Type WindowType => typeof(MainWindow);
+
+        protected override void OnHide()
+        {
+        }
+
+        protected override void OnShow()
+        {
+        }
+    }
+}

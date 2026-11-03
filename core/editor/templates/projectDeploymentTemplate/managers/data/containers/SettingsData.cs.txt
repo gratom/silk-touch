@@ -1,0 +1,6 @@
+namespace SilkTouch.Managers.Data
+{
+    public class SettingsData : BaseSettingsData
+    {
+    }
+}

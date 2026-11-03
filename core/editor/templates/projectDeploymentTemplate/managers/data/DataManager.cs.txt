@@ -1,0 +1,10 @@
+using System;
+using System.Threading.Tasks;
+using SilkTouch.Managers.Data;
+
+namespace SilkTouch.Managers
+{
+    public class DataManager : CoreDataManager<StaticData, DynamicData>
+    {
+    }
+}

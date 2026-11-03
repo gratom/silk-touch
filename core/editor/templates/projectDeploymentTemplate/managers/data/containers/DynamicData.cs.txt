@@ -1,0 +1,10 @@
+using System;
+
+namespace SilkTouch.Managers.Data
+{
+    [Serializable]
+    public class DynamicData : BaseDynamicData<GameData, SettingsData>
+    {
+
+    }
+}

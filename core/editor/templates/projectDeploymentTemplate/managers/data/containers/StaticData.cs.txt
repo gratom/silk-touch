@@ -1,0 +1,10 @@
+using UnityEngine;
+
+namespace SilkTouch.Managers.Data
+{
+    [CreateAssetMenu(fileName = "StaticData", menuName = "Scriptables/Static data", order = 51)]
+    public class StaticData : BaseStaticData
+    {
+
+    }
+}
