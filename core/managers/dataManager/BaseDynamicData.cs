@@ -6,20 +6,22 @@ namespace SilkTouch.Managers.Data
 {
 
     [Serializable]
-    public abstract class BaseDynamicData : IDynamicData
+    public abstract class BaseDynamicData<TGameData, TSettings> : IDynamicData
+        where TGameData : BaseGameData
+        where TSettings : BaseSettingsData
     {
         [SerializeField][Storage(Storage.StoragePathType.applicationFolder, "saves")]
-        protected GameData gameData;
+        protected TGameData gameData;
 
         [SerializeField][Storage(Storage.StoragePathType.playerPrefs, "Settings")]
-        protected SettingsData settings = new SettingsData();
+        protected TSettings settings;
 
-        public GameData GameData
+        public BaseGameData GameData
         {
             get => gameData;
-            set => gameData = value;
+            set => gameData = (TGameData)value;
         }
 
-        public SettingsData Settings => settings;
+        public BaseSettingsData Settings => settings;
     }
 }

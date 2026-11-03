@@ -24,17 +24,17 @@ namespace SilkTouch.Managers.Data
 
     public interface IDynamicData
     {
-        public GameData GameData { get; set; }
+        public BaseGameData GameData { get; set; }
 
-        public SettingsData Settings { get; }
+        public BaseSettingsData Settings { get; }
     }
 
     public interface IStaticData
     {
         public string DynamicDataLocation { get; }
-        public GameDataScriptableWrapper DefaultGameData { get; }
+        public BaseGameDataScriptableWrapper DefaultBaseGameData { get; }
         public LocalizationData LocalizationData { get; }
-        public GameBalanceData Balance { get; }
+        public BaseGameBalanceData Balance { get; }
     }
 
     public abstract class CoreDataManager<TStatic, TDynamic> : BaseManager, IDataManager where TStatic : IStaticData where TDynamic : IDynamicData, new()
@@ -117,13 +117,14 @@ namespace SilkTouch.Managers.Data
 
         #region private functions
 
-        private void OnBeforeSave()
+        protected virtual void OnBeforeSave()
         {
-            dynamicData.GameData.mainData.BeforeSaveData();
+            dynamicData.GameData.BeforeSaveData();
         }
 
-        private void OnAfterLoading()
+        protected virtual void OnAfterLoading()
         {
+            dynamicData.GameData.AfterLoadingData();
         }
 
         private void SaveDynamicData()

@@ -49,7 +49,7 @@ namespace SilkTouch.Boot
                 yield break;
             }
 
-            SceneLoader.LoadScene(bootSetting.NextSceneIndex, () => Services.GetManager<MainManager>().EntryPoint());
+            SceneLoader.LoadScene(bootSetting.NextSceneIndex, () => Services.GetManager<IMainManager>().EntryPoint());
         }
 
         #endregion private functions

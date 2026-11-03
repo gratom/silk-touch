@@ -14,7 +14,7 @@ namespace SilkTouch.Localization
         public override Type ManagerType => typeof(LanguageManager);
         public override bool IsFunctional => true;
 
-        private static SettingsData settingsData => Services.GetManager<IDataManager>().DynamicData.Settings;
+        private static BaseSettingsData settingsData => Services.GetManager<IDataManager>().DynamicData.Settings;
         
         private static Dictionary<SystemLanguage, Action> languageAutosetActionsDictionary = new Dictionary<SystemLanguage, Action>()
         {

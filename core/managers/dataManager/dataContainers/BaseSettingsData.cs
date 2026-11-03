@@ -6,7 +6,7 @@ namespace SilkTouch.Managers.Data
     using Tools;
     
     [Serializable]
-    public class SettingsData
+    public abstract class BaseSettingsData
     {
         [SerializeField] private GT.Language currentLanguage = GT.Language.English;
         [SerializeField] private bool isFirstLoad = true;

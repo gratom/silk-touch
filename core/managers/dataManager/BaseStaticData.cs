@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace SilkTouch.Managers.Data
 {
@@ -7,14 +8,15 @@ namespace SilkTouch.Managers.Data
     public abstract class BaseStaticData : ScriptableObject, IStaticData
     {
         [SerializeField] protected string dynamicDataLocation = "dynamicData";
-        [SerializeField] protected GameDataScriptableWrapper defaultGameData;
+        [FormerlySerializedAs("defaultGameData")]
+        [SerializeField] protected BaseGameDataScriptableWrapper defaultBaseGameData;
         [SerializeField] protected LocalizationData localizationData;
-        [SerializeField] protected GameBalanceData gameBalanceData;
+        [SerializeField] protected BaseGameBalanceData gameBalanceData;
 
         public string DynamicDataLocation => dynamicDataLocation;
-        public GameDataScriptableWrapper DefaultGameData => defaultGameData;
+        public BaseGameDataScriptableWrapper DefaultBaseGameData => defaultBaseGameData;
         public LocalizationData LocalizationData => localizationData;
-        public GameBalanceData Balance => gameBalanceData;
+        public BaseGameBalanceData Balance => gameBalanceData;
     }
 
 }
