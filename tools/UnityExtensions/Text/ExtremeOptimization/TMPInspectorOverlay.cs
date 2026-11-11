@@ -1,4 +1,4 @@
-#if UNITY_EDITOR && UI_TMP
+#if UNITY_EDITOR && UI_TMP && UNITASK
 using UnityEngine;
 using UnityEditor;
 using TMPro;
