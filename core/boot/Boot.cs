@@ -24,7 +24,6 @@ namespace SilkTouch.Boot
 
         private void PreBootProjectSettings()
         {
-            Application.targetFrameRate = 60;
             Time.timeScale = 1;
         }
 
