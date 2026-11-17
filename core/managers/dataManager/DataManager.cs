@@ -20,6 +20,7 @@ namespace SilkTouch.Managers.Data
     {
         IStaticData StaticData { get; }
         IDynamicData DynamicData { get; }
+        void ForceSaveData();
     }
 
     public interface IDynamicData
