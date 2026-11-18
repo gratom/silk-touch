@@ -3,12 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
+#endif
 
 namespace SilkTouch.UI
 {
     using Tools;
     using Managers;
 
+    [RequireComponent(typeof(EventSystem))]
     public class UIManager : BaseManager
     {
         public override Type ManagerType => typeof(UIManager);
@@ -16,6 +22,9 @@ namespace SilkTouch.UI
         public override bool IsFunctional => true;
 #pragma warning disable
         [SerializeField] private List<BaseWindow> windowContainers;
+#if ENABLE_INPUT_SYSTEM
+        [SerializeField] private InputActionAsset defaultUIActions;
+#endif
 #pragma warning restore
 
         private Dictionary<Type, BaseWindow> windowsDictionary = new Dictionary<Type, BaseWindow>();
@@ -25,11 +34,32 @@ namespace SilkTouch.UI
 
         protected override async Task<bool> OnInit()
         {
+            EnsureInputModule();
             InitDictionary();
             return true;
         }
 
 #pragma warning restore
+
+        private void EnsureInputModule()
+        {
+#if ENABLE_INPUT_SYSTEM
+            if (!TryGetComponent(out InputSystemUIInputModule module))
+            {
+                module = gameObject.AddComponent<InputSystemUIInputModule>();
+            }
+
+            if (module.actionsAsset == null)
+            {
+                module.actionsAsset = defaultUIActions;
+            }
+#else
+            if (!TryGetComponent(out StandaloneInputModule _))
+            {
+                gameObject.AddComponent<StandaloneInputModule>();
+            }
+#endif
+        }
 
         private void InitDictionary()
         {

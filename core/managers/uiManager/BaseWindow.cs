@@ -1,5 +1,6 @@
 ﻿#if UI_TMP
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,6 +27,23 @@ namespace SilkTouch.UI
 
         public bool IsShowing => isShowing;
         private bool isShowing;
+
+        private readonly List<IDisposable> connections = new List<IDisposable>();
+
+        public void AddConnection(IDisposable connection)
+        {
+            connections.Add(connection);
+        }
+
+        private void DisconnectAll()
+        {
+            for (int i = 0; i < connections.Count; i++)
+            {
+                connections[i].Dispose();
+            }
+
+            connections.Clear();
+        }
 
 #if UNITY_EDITOR
         [ContextMenu("Refresh")]
@@ -66,6 +84,7 @@ namespace SilkTouch.UI
         {
             gameObject.SetActive(false);
             isShowing = false;
+            DisconnectAll();
             OnHide();
         }
 
