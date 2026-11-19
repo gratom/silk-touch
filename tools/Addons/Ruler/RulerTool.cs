@@ -55,6 +55,43 @@ namespace SilkTouch.Tools.Ruler
         private static readonly Color GridMinorColor = new Color(0.92f, 0.92f, 0.92f, 0.22f);
         private const int MaxGridLinesPerAxis = 400;
 
+        // Free two-point measurement (Shift+R): point A is fixed once placed, point B tracks
+        // the cursor live until any mouse click ends the measurement.
+        private static bool measuring;
+        private static Vector3 pointA;
+        private static readonly Color MeasureColor = new Color(1f, 0.85f, 0.2f);
+
+        private static GUIStyle labelStyle;
+        private static Texture2D labelBackgroundTexture;
+
+        // Plain white-on-dark backing so measurement numbers stay readable over any
+        // scene background, light or dark, instead of relying on the default label style.
+        private static GUIStyle LabelStyle
+        {
+            get
+            {
+                if (labelStyle == null || labelBackgroundTexture == null)
+                {
+                    labelBackgroundTexture = new Texture2D(1, 1, TextureFormat.RGBA32, false)
+                    {
+                        hideFlags = HideFlags.HideAndDontSave
+                    };
+                    labelBackgroundTexture.SetPixel(0, 0, new Color(0f, 0f, 0f, 0.6f));
+                    labelBackgroundTexture.Apply();
+
+                    labelStyle = new GUIStyle(EditorStyles.label)
+                    {
+                        alignment = TextAnchor.MiddleCenter,
+                        fontStyle = FontStyle.Bold,
+                        padding = new RectOffset(3, 3, 1, 1)
+                    };
+                    labelStyle.normal.textColor = Color.white;
+                    labelStyle.normal.background = labelBackgroundTexture;
+                }
+                return labelStyle;
+            }
+        }
+
         public static bool Enabled
         {
             get => EditorPrefs.GetBool(EnabledPrefKey, true);
@@ -208,6 +245,8 @@ namespace SilkTouch.Tools.Ruler
                 return;
             }
 
+            HandleFreeMeasurementInput(sceneView);
+
             processed.Clear();
 
             foreach (GameObject go in Selection.gameObjects)
@@ -240,7 +279,156 @@ namespace SilkTouch.Tools.Ruler
             }
 
             DrawAllGrids();
+            DrawFreeMeasurement(sceneView);
         }
+
+        #region free measurement (shift+r)
+
+        private static void HandleFreeMeasurementInput(SceneView sceneView)
+        {
+            Event e = Event.current;
+
+            if (e.type == EventType.KeyDown && e.keyCode == KeyCode.R && e.shift)
+            {
+                // No anchor fallback for the first point: if nothing is hit and the camera
+                // faces away from the origin planes, we simply ignore the key press.
+                if (TryPickPoint(sceneView.camera, e.mousePosition, null, out Vector3 point))
+                {
+                    pointA = point;
+                    measuring = true;
+                    sceneView.Repaint();
+                }
+                e.Use();
+            }
+            else if (measuring && e.type == EventType.MouseDown && (e.button == 0 || e.button == 1))
+            {
+                // Any click ends the measurement; the click itself still reaches normal
+                // scene input (object selection, camera-look drag start) unaffected.
+                measuring = false;
+                sceneView.Repaint();
+            }
+        }
+
+        private static void DrawFreeMeasurement(SceneView sceneView)
+        {
+            if (!measuring)
+            {
+                return;
+            }
+
+            Camera cam = sceneView.camera;
+            bool hasB = TryPickPoint(cam, Event.current.mousePosition, pointA, out Vector3 pointB);
+
+            Handles.color = MeasureColor;
+            float markerSizeA = HandleUtility.GetHandleSize(pointA) * 0.08f;
+            Handles.SphereHandleCap(0, pointA, Quaternion.identity, markerSizeA, Event.current.type);
+
+            if (hasB)
+            {
+                Handles.DrawLine(pointA, pointB);
+
+                float markerSizeB = HandleUtility.GetHandleSize(pointB) * 0.08f;
+                Handles.SphereHandleCap(0, pointB, Quaternion.identity, markerSizeB, Event.current.type);
+
+                float length = Vector3.Distance(pointA, pointB);
+                if (length > 0.0001f)
+                {
+                    Vector3 dir = (pointB - pointA) / length;
+                    Vector3 camForward = cam != null ? cam.transform.forward : Vector3.forward;
+                    Vector3 tickDir = Vector3.Cross(dir, camForward);
+                    if (tickDir.sqrMagnitude < 0.0001f)
+                    {
+                        tickDir = Vector3.Cross(dir, Vector3.up);
+                    }
+                    if (tickDir.sqrMagnitude < 0.0001f)
+                    {
+                        tickDir = Vector3.Cross(dir, Vector3.right);
+                    }
+                    tickDir.Normalize();
+
+                    DrawTicks(pointA, pointB, length, tickDir);
+
+                    float handleSize = HandleUtility.GetHandleSize(pointB);
+                    float labelOffset = handleSize * (DragHandleSizeMultiplier + 0.6f);
+                    Handles.Label(pointB + Vector3.up * labelOffset, length.ToString("0.00") + "m", LabelStyle);
+                }
+            }
+
+            // Keep repainting while measuring so point B tracks the mouse without needing a drag.
+            sceneView.Repaint();
+        }
+
+        // Point pick order: (1) RaySnap - the same surface pick Unity's own snap-to-surface
+        // (V / Ctrl-drag) uses, hits any renderer with no collider required; (2) a plain physics
+        // raycast against colliders, covering collider-only objects; (3) an origin-centered axis
+        // plane chosen to face the ray most head-on; (4) for the second point only, a plane
+        // through the anchor facing the camera, which is guaranteed to intersect.
+        private static bool TryPickPoint(Camera cam, Vector2 guiPosition, Vector3? anchorFallback, out Vector3 worldPoint)
+        {
+            Ray ray = HandleUtility.GUIPointToWorldRay(guiPosition);
+
+            object snapHit = HandleUtility.RaySnap(ray);
+            if (snapHit is RaycastHit hit)
+            {
+                worldPoint = hit.point;
+                return true;
+            }
+
+            if (Physics.Raycast(ray, out RaycastHit physicsHit))
+            {
+                worldPoint = physicsHit.point;
+                return true;
+            }
+
+            if (TryIntersectZeroPlane(ray, out worldPoint))
+            {
+                return true;
+            }
+
+            if (anchorFallback.HasValue && TryIntersectCameraFacingPlane(ray, cam, anchorFallback.Value, out worldPoint))
+            {
+                return true;
+            }
+
+            worldPoint = default;
+            return false;
+        }
+
+        private static bool TryIntersectZeroPlane(Ray ray, out Vector3 point)
+        {
+            Vector3 dir = ray.direction;
+            float ax = Mathf.Abs(dir.x);
+            float ay = Mathf.Abs(dir.y);
+            float az = Mathf.Abs(dir.z);
+
+            Vector3 normal = (ay >= ax && ay >= az) ? Vector3.up : (ax >= az ? Vector3.right : Vector3.forward);
+
+            return TryIntersectPlane(ray, normal, Vector3.zero, out point);
+        }
+
+        private static bool TryIntersectCameraFacingPlane(Ray ray, Camera cam, Vector3 anchor, out Vector3 point)
+        {
+            Vector3 normal = cam != null ? cam.transform.forward : ray.direction;
+            return TryIntersectPlane(ray, normal, anchor, out point);
+        }
+
+        private static bool TryIntersectPlane(Ray ray, Vector3 normal, Vector3 pointOnPlane, out Vector3 point)
+        {
+            float denom = Vector3.Dot(ray.direction, normal);
+            if (Mathf.Abs(denom) > 1e-6f)
+            {
+                float t = Vector3.Dot(pointOnPlane - ray.origin, normal) / denom;
+                if (t >= 0f)
+                {
+                    point = ray.origin + ray.direction * t;
+                    return true;
+                }
+            }
+            point = default;
+            return false;
+        }
+
+        #endregion
 
         private static void DrawAllGrids()
         {
@@ -465,7 +653,7 @@ namespace SilkTouch.Tools.Ruler
 
                 float handleSize = HandleUtility.GetHandleSize(worldMax);
                 float labelOffset = handleSize * (DragHandleSizeMultiplier + 0.6f);
-                Handles.Label(worldMax + Vector3.up * labelOffset, length.ToString("0.00") + "m");
+                Handles.Label(worldMax + Vector3.up * labelOffset, length.ToString("0.00") + "m", LabelStyle);
             }
 
             DrawDragHandle(t, localBounds, axis, worldMin, worldMax, true, color);
@@ -494,7 +682,7 @@ namespace SilkTouch.Tools.Ruler
 
                 if (isMeter)
                 {
-                    Handles.Label(p + tickDir * tickSize * 1.3f, Mathf.RoundToInt(dist).ToString());
+                    Handles.Label(p + tickDir * tickSize * 1.3f, Mathf.RoundToInt(dist).ToString(), LabelStyle);
                 }
             }
         }
