@@ -278,20 +278,65 @@ namespace SilkTouch.Tools.Ruler
             {
                 return false;
             }
+            return TryGetLocalBounds(go, out _);
+        }
+
+        // Falls back from the render mesh to whatever collider shape is present, so the ruler
+        // also works on colliders-only objects (no MeshFilter/MeshRenderer at all).
+        private static bool TryGetLocalBounds(GameObject go, out Bounds bounds)
+        {
             MeshFilter meshFilter = go.GetComponent<MeshFilter>();
-            return meshFilter != null && meshFilter.sharedMesh != null;
+            if (meshFilter != null && meshFilter.sharedMesh != null)
+            {
+                bounds = meshFilter.sharedMesh.bounds;
+                return true;
+            }
+
+            BoxCollider box = go.GetComponent<BoxCollider>();
+            if (box != null)
+            {
+                bounds = new Bounds(box.center, box.size);
+                return true;
+            }
+
+            SphereCollider sphere = go.GetComponent<SphereCollider>();
+            if (sphere != null)
+            {
+                float diameter = sphere.radius * 2f;
+                bounds = new Bounds(sphere.center, new Vector3(diameter, diameter, diameter));
+                return true;
+            }
+
+            CapsuleCollider capsule = go.GetComponent<CapsuleCollider>();
+            if (capsule != null)
+            {
+                float diameter = capsule.radius * 2f;
+                float height = Mathf.Max(capsule.height, diameter);
+                Vector3 size = new Vector3(diameter, diameter, diameter);
+                SetComponent(ref size, capsule.direction, height);
+                bounds = new Bounds(capsule.center, size);
+                return true;
+            }
+
+            MeshCollider meshCollider = go.GetComponent<MeshCollider>();
+            if (meshCollider != null && meshCollider.sharedMesh != null)
+            {
+                bounds = meshCollider.sharedMesh.bounds;
+                return true;
+            }
+
+            bounds = default;
+            return false;
         }
 
         private static void DrawGridFor(GameObject go, GridSide side)
         {
-            MeshFilter meshFilter = go.GetComponent<MeshFilter>();
-            if (meshFilter == null || meshFilter.sharedMesh == null)
+            if (!TryGetLocalBounds(go, out Bounds bounds))
             {
                 return;
             }
 
             Transform t = go.transform;
-            Bounds bounds = meshFilter.sharedMesh.bounds;
 
             int axis = side.axis;
             int u = (axis + 1) % 3;
@@ -369,8 +414,12 @@ namespace SilkTouch.Tools.Ruler
 
         private static void DrawRulerFor(GameObject go)
         {
+            if (!TryGetLocalBounds(go, out Bounds localBounds))
+            {
+                return;
+            }
+
             Transform t = go.transform;
-            Bounds localBounds = go.GetComponent<MeshFilter>().sharedMesh.bounds;
             Vector3 cornerLocal = localBounds.min;
 
             for (int axis = 0; axis < 3; axis++)
